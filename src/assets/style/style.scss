@@ -13,3 +13,16 @@
     border:1px dashed gray;
 }
 
+.custom-border-top{
+    border-top-left-radius: $border-radius;
+    border-top-right-radius: $border-radius;
+}
+
+.custom-border-bottom{
+    border-bottom-left-radius: $border-radius;
+    border-bottom-right-radius: $border-radius;
+}
+
+table thead tr th{
+    color: $primary !important;
+}
