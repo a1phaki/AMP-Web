@@ -1,0 +1,8 @@
+@import "bootstrap/scss/functions";
+@import "./variables";
+@import "/node_modules/bootstrap";
+@import "bootstrap/scss/utilities/api";
+@import "./utilities.scss";
+@import "bootstrap/scss/bootstrap.scss";
+//基礎設置
+@import"./base.scss";
