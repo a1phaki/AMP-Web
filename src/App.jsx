@@ -1,14 +1,11 @@
-import { useState } from 'react'
-import axios from 'axios'
-import "./assets/style/style.scss";
-import './App.css'
+import ModalForm from './component/modalForm';
 
 function App() {
   
 
   return (
     <>
-      
+      <ModalForm/>
     </>
   )
 }
