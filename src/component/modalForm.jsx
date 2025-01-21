@@ -42,6 +42,11 @@ function ModalForm() {
       }
     };
 
+    const clearFields = () => {
+        setIsSelected(false);
+        setSelectedOption(null)
+        reset(); // 重置表单字段
+    };
 
     const ModalOption =[
         'E. coli',
@@ -197,7 +202,7 @@ AAARLRLLLYLITRR`}
                 </form>
             </div>
             <div className='p-3 d-flex justify-content-end custom-border-bottom' style={{ backgroundColor: '#F9FAFB' }}>
-                <button type='button' className='btn btn-outline-primary btn-lg me-4'>
+                <button type='button' className='btn btn-outline-primary btn-lg me-4' onClick={clearFields}>
                     Clear fields
                 </button>
                 <button type="submit" className='btn btn-primary btn-lg text-white'>
