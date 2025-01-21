@@ -28,6 +28,11 @@
     border-bottom-right-radius: $border-radius;
 }
 
+.custom-hover:hover{
+    background-color: $warning;
+    border-color: #E57673;
+}
+
 table thead tr th{
     color: $primary !important;
 }
