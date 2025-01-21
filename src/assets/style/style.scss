@@ -9,8 +9,26 @@
 
 .custom-file{
     width: 100%;
-    height:252px;
-    border:1px dashed gray;
+    height:148px;
+    border:1px dashed #D1D5DB;
+}
+
+.custom-select-file{
+    width: 100%;
+    height:80px;
+    border:1px solid #D1D5DB;
+    max-width: 100%; /* 确保整个组件不会超出父容器 */
+}
+.file-info {
+    max-width: calc(100% - 50px); /* 限制文字区域宽度，避免溢出边框 */
+    overflow: hidden; /* 隐藏超出的内容 */
+}
+
+.file-info h4,
+.file-info p {
+white-space: nowrap; /* 防止换行 */
+overflow: hidden; /* 隐藏超出的文本 */
+text-overflow: ellipsis; /* 添加省略号 */
 }
 .custom-border{
     border-bottom-left-radius: $border-radius;
@@ -32,7 +50,9 @@
     background-color: $warning;
     border-color: #E57673;
 }
-
+.img-title{
+    width: 176px;
+}
 table thead tr th{
     color: $primary !important;
 }

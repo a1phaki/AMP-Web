@@ -1,47 +1,47 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
+import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
 
 
 function ModalForm() {
     const { register, handleSubmit, watch, reset,setValue } = useForm();
-    const [fastaContent, setFastaContent] = useState(""); // 儲存 fasta 檔案內容
     const [selectedOption, setSelectedOption] = useState(""); // 儲存 radio 選項
-
+    const [fileData, setFileData] = useState({
+        fileName:'',
+        fileSize:'',
+        fileContent:''
+    })
+    const [isSelected, setIsSelected] = useState(false);
     const [fileContent, setFileContent] = useState(""); // 用于存储文件内容
 
     const handleFileChange = (event) => {
       const file = event.target.files[0]; // 获取上传的文件
   
       if (file) {
+        console.log("File Name:", file.name);
+        console.log("File Size:", file.size, "bytes");  
         const reader = new FileReader();
   
         reader.onload = (e) => {
-            console.log(e);
-          setFileContent(e.target.result); // 将文件内容存储到状态中
-          setValue("textarea", e.target.result); 
+            const content = e.target.result; // 直接从回调中获取文件内容
+      
+            // 更新 fileContent 状态
+            setFileContent(content);
+      
+            // 更新 textarea 的值
+            setValue("textarea", content);
+            setFileData({
+                fileName: file.name,
+                fileSize: file.size , // 转换为 MB
+                fileContent: fileContent, // 使用最新的文件内容
+            })
         };
-  
+
+        setIsSelected(true); 
         reader.readAsText(file); // 以文本格式读取文件内容
       }
     };
 
-    // 監聽 textarea 的輸入
-    const textareaValue = watch("textarea", "");
-    // 生成 .fasta 檔案
-    const handleGenerateFasta = () => {
-        if (!textareaValue) {
-        alert("請先輸入內容！");
-        return;
-        }
-
-        const blob = new Blob([textareaValue], { type: "text/plain" });
-        const link = document.createElement("a");
-        link.href = URL.createObjectURL(blob);
-        link.download = "output.fasta";
-        link.click();
-
-        setFastaContent(textareaValue); // 儲存內容
-    };
 
     const ModalOption =[
         'E. coli',
@@ -86,17 +86,6 @@ function ModalForm() {
         setSelectedOption(e.target.value)
     }
 
-    // 記錄資料
-    const handleRecordData = (data) => {
-        if (!selectedOption) {
-        alert("請選擇一個選項！");
-        return;
-        }
-
-        console.log("記錄的資料：", { fastaContent, selectedOption });
-        alert(`資料已記錄！\nFASTA內容：\n${fastaContent}\n選擇：${selectedOption}`);
-    };
-
   return (
     <>
         <div className='container py-5 bg-success'>
@@ -104,7 +93,7 @@ function ModalForm() {
                 <h2 className=' ps-3 fs-bold '>USE ANIA</h2>
             </div>
             <div className='bg-white px-4 pt-1 pb-4'>
-                <form onSubmit={handleSubmit(handleRecordData)}>
+                <form onSubmit={handleSubmit()}>
                     {/* Textarea 與檔案選擇組 */}
                     <div className="row border-bottom pb-3 my-3 border-2">
                         <div className="col-6">
@@ -128,9 +117,9 @@ AAARLRLLLYLITRR`}
                         </div>
                         <div className="col-6">
                             <h5 className='text-primary fw-semibold mb-5'><span className='text-black fw-normal h5'>OR Upload FASTA sequence file</span></h5>
-                            <div className="custom-file">
-                                <h4 className='text-center pt-5'>Choose a file or drag & drop</h4>
-                                <div className='d-flex justify-content-center pt-3'>
+                            <div className="custom-file py-5">
+                                <h4 className='text-center'>Choose a file or drag & drop</h4>
+                                <div className='d-flex justify-content-center '>
                                     <label htmlFor="fileInput" className="text-center h4 btn btn-outline-primary btn-lg">
                                         Choose a file 
                                     </label>
@@ -143,6 +132,21 @@ AAARLRLLLYLITRR`}
                                         accept=".fasta" // 限制可上传的文件类型
                                     />
                                 </div>
+                            </div>
+                            <div className="custom-select-file my-7 d-flex align-items-center">
+                                <div className="custom-border border-1 border-danger border ms-7">
+                                    <InsertDriveFileIcon className="m-3" sx={{ color: '#F38986' }}/>
+                                </div>
+                                {isSelected?
+                                    <div className="ps-3 file-info">
+                                        <h4 className="mb-0 pt-3">{fileData.fileName}</h4>
+                                        <p className="">{`${fileData.fileSize} bytes`}</p> 
+                                    </div>
+                                :
+                                    <div className="ps-3 file-info">    
+                                        <h4 className="mb-0">尚未選擇檔案</h4>
+                                    </div>    
+                                }
                             </div>
                             <p className='pt-2 text-black-50' style={{'fontSize':'14px'}} >Upload a plain text file containing protein sequence(s) in FASTA format.</p>
                         </div>
