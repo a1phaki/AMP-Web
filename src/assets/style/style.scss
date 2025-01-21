@@ -12,7 +12,12 @@
     height:252px;
     border:1px dashed gray;
 }
-
+.custom-border{
+    border-bottom-left-radius: $border-radius;
+    border-bottom-right-radius: $border-radius;
+    border-top-left-radius: $border-radius;
+    border-top-right-radius: $border-radius;
+}
 .custom-border-top{
     border-top-left-radius: $border-radius;
     border-top-right-radius: $border-radius;
