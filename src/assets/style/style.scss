@@ -6,7 +6,10 @@
 @import "bootstrap/scss/bootstrap.scss";
 //基礎設置
 @import"./base.scss";
-
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Noto+Serif+TC:wght@200..900&family=Noto+Serif:ital,wght@0,100..900;1,100..900&display=swap');
+.btn-outline-primary:hover{
+    color: white;
+}
 .custom-file{
     width: 100%;
     height:148px;

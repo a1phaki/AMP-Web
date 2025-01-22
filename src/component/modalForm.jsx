@@ -95,7 +95,7 @@ function ModalForm() {
     <>
         <div className='container py-5 bg-success'>
             <div className='pt-3   pb-2 custom-border-top bg-secondary' >
-                <h2 className=' ps-3 fs-bold '>USE ANIA</h2>
+                <h2 className=' ps-3 fs-bold h5'>USE ANIA</h2>
             </div>
             <div className='bg-white px-4 pt-1 pb-4'>
                 <form onSubmit={handleSubmit()}>
@@ -122,8 +122,8 @@ AAARLRLLLYLITRR`}
                         </div>
                         <div className="col-6">
                             <h5 className='text-primary fw-semibold mb-5'><span className='text-black fw-normal h5'>OR Upload FASTA sequence file</span></h5>
-                            <div className="custom-file py-5">
-                                <h4 className='text-center'>Choose a file or drag & drop</h4>
+                            <div className="custom-file py-4">
+                                <h6 className='text-center pb-3'>Choose a file or drag & drop</h6>
                                 <div className='d-flex justify-content-center '>
                                     <label htmlFor="fileInput" className="text-center h4 btn btn-outline-primary btn-lg">
                                         Choose a file 
@@ -149,7 +149,7 @@ AAARLRLLLYLITRR`}
                                     </div>
                                 :
                                     <div className="ps-3 file-info">    
-                                        <h4 className="mb-0">尚未選擇檔案</h4>
+                                        <h4 className="mb-0">No file selected</h4>
                                     </div>    
                                 }
                             </div>
@@ -213,7 +213,7 @@ AAARLRLLLYLITRR`}
 
         <div className='container py-5 bg-success'>
             <div className='pt-3   pb-2 custom-border-top bg-secondary' >
-                <h2 className='ps-3 fs-bold '>RESULT TABLE</h2>
+                <h2 className='ps-3 fs-bold h5'>RESULT TABLE</h2>
             </div>
             <div className='bg-white p-4'>
                 <table className='table-secondary table table-striped'>
