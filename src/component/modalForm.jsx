@@ -31,7 +31,7 @@ function ModalForm() {
             setFileContent(content);
       
             // 更新 textarea 的值
-            setValue("textarea", content);
+            setValue("fastaData", content);
             setFileData({
                 fileName: file.name,
                 fileSize: file.size , // 转换为 MB
@@ -68,7 +68,21 @@ function ModalForm() {
         setSelectedOption(e.target.value)
     }
 
-    const handleFormSubmit = (data)=>{
+    const maxLines = 20000;
+
+    const handleInput = (e)=>{
+        const textarea = e.target;
+        const lines = textarea.value.split('\n');
+        if (lines.length > maxLines) {
+            // 限制超過最大行數的內容
+            console.log('你輸入資料超過最大行數');
+            const limitedText = lines.slice(0, maxLines).join('\n');
+            setValue('fastaData', limitedText); // 更新表單值
+            textarea.value = limitedText; // 更新顯示內容
+        }
+    }
+
+    const handleFormSubmit = async(data)=>{
         const lines = data.fastaData.trim().split("\n");
         const result = [];
 
@@ -78,8 +92,17 @@ function ModalForm() {
             result.push({ id, sequence,target:data.target });
         }
 
+        //POST api
+        // try {
+        //     const res = await axios.post('url',result);
+        // } catch (error) {
+            
+        // }
+        
+
         setTableData(result);
         setIsUseANIA(true);
+
     }
   return (
     <>
@@ -98,7 +121,9 @@ function ModalForm() {
 
                         <div className="col-6">
                             <textarea
-                                {...register("fastaData")}
+                                {...register("fastaData",{
+                                    onChange:(e)=> handleInput(e), // 將行數限制邏輯加入到 onChange
+                                })}
                                 placeholder={`# Enter your sequences in FASTA format:
 >DBAASP_5613
 AAAAAAAAAAGIGKFLHSAKKFGKAFVGEIMNS
@@ -125,7 +150,9 @@ AAARLRLLLYLITRR`}
                                         <input
                                             id="fileInput"
                                             type="file"
-                                            {...register("fileInput")}
+                                            {...register("fileInput",
+                                                {onChange:(e)=>handleFileChange(e)})
+                                            }
                                             onChange={handleFileChange} // 添加文件上传的 onChange 事件
                                             style={{ display: "none" }} // 隱藏原本的 file 按鈕
                                             accept=".fasta" // 限制可上传的文件类型
@@ -210,11 +237,11 @@ AAARLRLLLYLITRR`}
         {
             isUseANIA &&
             (<div className='container py-5 bg-success'>
-                <div className='pt-3   pb-2 custom-border-top bg-secondary' >
+                <div className='pt-3  pb-2 custom-border-top bg-secondary' >
                     <h2 className='ps-3 fs-bold h5'>RESULT TABLE</h2>
                 </div>
-                <div className='bg-white p-4'>
-                    <table className='table-secondary table table-striped'>
+                <div className='bg-white p-4 custom-table'>
+                    <table className='table-secondary table table-striped '>
                         <thead>
                             <tr>
                                 <th scope="col" width='15%'>ID</th>

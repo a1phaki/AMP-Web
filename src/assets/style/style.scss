@@ -59,3 +59,8 @@ text-overflow: ellipsis; /* 添加省略号 */
 table thead tr th{
     color: $primary !important;
 }
+
+.custom-table{
+    max-height:442px;
+    overflow-y: auto
+}
