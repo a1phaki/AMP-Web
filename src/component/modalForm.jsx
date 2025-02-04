@@ -89,12 +89,16 @@ function ModalForm() {
         for (let i = 0; i < lines.length; i += 2) {
             const id = lines[i].replace(">", "").trim();
             const sequence = lines[i + 1].trim();
-            result.push({ id, sequence,target:data.target });
+            result.push({ id, sequence});
         }
 
-        //POST api
+        // POST api
         // try {
-        //     const res = await axios.post('url',result);
+        //     const res = await axios.post('url',{
+        //         id:'',
+        //         data:result,
+        //         target:data.target
+        //     });
         // } catch (error) {
             
         // }

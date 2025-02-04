@@ -1,6 +1,10 @@
-import ModalForm from './component/modalForm';
-import Content from './component/content';
 import Header from './component/header';
+import Home from './pages/Home';
+import Intro from './pages/Intro';
+import Tutor from './pages/Tutor';
+import Download from './pages/Download';
+
+import { Routes, Route } from 'react-router-dom';
 
 function App() {
   
@@ -8,8 +12,14 @@ function App() {
   return (
     <>
       <Header/>
-      <Content/>
-      <ModalForm/>
+      <div className='container'>
+        <Routes>
+          <Route path='/' element={<Home/>}></Route>
+          <Route path='/introduction' element={<Intro/>}></Route>
+          <Route path='/tutorial' element={<Tutor/>}></Route>
+          <Route path='/download' element={<Download/>}></Route>
+        </Routes>
+      </div>
     </>
   )
 }
