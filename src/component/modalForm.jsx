@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
 
 
 function ModalForm() {
-    const { register, handleSubmit, watch, reset,setValue } = useForm();
+    const { register, handleSubmit, reset,setValue } = useForm();
     const [selectedOption, setSelectedOption] = useState(""); // 儲存 radio 選項
     const [fileData, setFileData] = useState({
         fileName:'',
@@ -114,7 +114,7 @@ function ModalForm() {
             <div className='pt-3   pb-2 custom-border-top bg-secondary' >
                 <h2 className=' ps-3 fs-bold h5'>USE ANIA</h2>
             </div>
-            <div className='bg-white px-4 pt-1 pb-4'>
+            <div className='bg-white px-4 pt-1 pb-4 custom-border-bottom'>
                 <form onSubmit={handleSubmit(handleFormSubmit)}>
                     {/* Textarea 與檔案選擇組 */}
                     <div className="row border-bottom my-3 border-2">

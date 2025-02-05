@@ -1,7 +1,7 @@
 function Content() {
     return (
         <>
-            <div className="container bg-success px-3 py-5">
+            <div className=" bg-success px-3 py-5">
                 <div className="bg-white custom-border">
                     <div className="d-flex justify-content-center py-5">
                         <img src="img/Workflow.png" className="object-fit-cover px-5" width='100%' alt="主圖" />

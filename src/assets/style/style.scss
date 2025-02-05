@@ -34,19 +34,19 @@ overflow: hidden; /* 隐藏超出的文本 */
 text-overflow: ellipsis; /* 添加省略号 */
 }
 .custom-border{
-    border-bottom-left-radius: $border-radius;
-    border-bottom-right-radius: $border-radius;
-    border-top-left-radius: $border-radius;
-    border-top-right-radius: $border-radius;
+    border-bottom-left-radius: 12px;
+    border-bottom-right-radius: 12px;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
 }
 .custom-border-top{
-    border-top-left-radius: $border-radius;
-    border-top-right-radius: $border-radius;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
 }
 
 .custom-border-bottom{
-    border-bottom-left-radius: $border-radius;
-    border-bottom-right-radius: $border-radius;
+    border-bottom-left-radius: 12px;
+    border-bottom-right-radius: 12px;
 }
 
 .custom-hover:hover{
@@ -62,5 +62,28 @@ table thead tr th{
 
 .custom-table{
     max-height:442px;
-    overflow-y: auto
+    overflow-y: auto;
+
+}
+.nav-link.active{
+    font-weight: $font-weight-medium;
+}
+
+.custom-table-secondary {
+    --bs-table-color: #000;
+    --bs-table-bg: #FFF7F5;
+    --bs-table-border-color: #4d5154;
+    --bs-table-striped-bg: #fff;
+    --bs-table-striped-color: #000;
+    --bs-table-active-bg: #373b3e;
+    --bs-table-active-color: #fff;
+    --bs-table-hover-bg: #F9FAFB;
+    --bs-table-hover-color: #000;
+    color: var(--bs-table-color);
+    border-color: var(--bs-table-border-color);
+}
+
+  .custom-table-secondary.table-striped tbody tr:hover {
+    background-color: #FFF7F5; /* 自訂 hover 背景色 */
+    color: #000; /* 自訂 hover 文字色 */
 }
