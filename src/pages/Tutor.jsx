@@ -8,7 +8,7 @@ import { faArrowPointer } from '@fortawesome/free-solid-svg-icons';
 export default function Tutor(){
     const { register} = useForm();
 
-    const [selectedOption, setSelectedOption] = useState("E. coli");
+    const [selectedOption, setSelectedOption] = useState("");
 
     const handelOption = (e)=>{
         setSelectedOption(e.target.value)
