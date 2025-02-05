@@ -304,8 +304,9 @@ $success:       gray !default;
 $info:          #FFF7F5 !default;
 $warning:       #FFEFEB !default;
 $danger:        #D1D5DB !default;
-$light:         $gray-100 !default;
-$dark:          $gray-900 !default;
+$light:         #F9FAFB !default;
+$dark:          #fff !default;
+
 // scss-docs-end theme-color-variables
 
 // scss-docs-start theme-colors-map
@@ -316,7 +317,7 @@ $theme-colors: (
   "info":       #FFF7F5,
   "warning":    #FFEFEB,
   "danger":     #D1D5DB,
-  "light":      $light,
+  "light":      #F9FAFB,
   "dark":       $dark
 ) !default;
 // scss-docs-end theme-colors-map
