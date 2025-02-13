@@ -1,23 +1,29 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
-
+import axios from "axios";
 
 function ModalForm() {
     const { register, handleSubmit, reset,setValue } = useForm();
-    const [selectedOption, setSelectedOption] = useState(""); // 儲存 radio 選項
+    const [selectedOption, setSelectedOption] = useState(""); // 儲存選擇的 radio 按鈕選項
     const [fileData, setFileData] = useState({
         fileName:'',
         fileSize:'',
         fileContent:''
     });
 
-    const [isUseANIA,setIsUseANIA] = useState(false);
+    const [isUseANIA, setIsUseANIA] = useState(false);
     const [isSelected, setIsSelected] = useState(false);
-    const [fileContent, setFileContent] = useState(""); // 用于存储文件内容
+    const [target,SetTarget] = useState('');
+    const [, setFileContent] = useState(""); // 用於存儲檔案內容
+    const [, setApiResponse] = useState(null); // 儲存 API 回應結果
 
+    // FastAPI 伺服器地址
+    const API_URL = "http://140.113.120.176:5000/api/upload-fasta";
+
+    // 處理檔案上傳
     const handleFileChange = (event) => {
-      const file = event.target.files[0]; // 获取上传的文件
+      const file = event.target.files[0]; // 取得上傳的檔案
   
       if (file) {
         console.log("File Name:", file.name);
@@ -25,38 +31,48 @@ function ModalForm() {
         const reader = new FileReader();
   
         reader.onload = (e) => {
-            const content = e.target.result; // 直接从回调中获取文件内容
-      
-            // 更新 fileContent 状态
+            let content = e.target.result; // 取得檔案內容
+            let lines = content.split('\n');
+
+            if (lines.length > maxLines) {
+                alert(`檔案內容超過 ${maxLines} 行，只會保留前 ${maxLines} 行`);
+                content = lines.slice(0, maxLines).join('\n'); // 限制行數
+            }
+
+            // 更新 fileContent 狀態
             setFileContent(content);
-      
+            
             // 更新 textarea 的值
             setValue("fastaData", content);
+            
+            // 更新檔案資訊
             setFileData({
                 fileName: file.name,
-                fileSize: file.size , // 转换为 MB
-                fileContent: fileContent, // 使用最新的文件内容
-            })
+                fileSize: file.size,
+                fileContent: content, // 使用最新的檔案內容
+            });
         };
 
         setIsSelected(true); 
-        reader.readAsText(file); // 以文本格式读取文件内容
+        reader.readAsText(file); // 以文字格式讀取檔案內容
       }
     };
 
+    // 清空表單
     const clearFields = () => {
         setIsSelected(false);
-        setSelectedOption(null)
-        reset(); // 重置表单字段
+        setSelectedOption("");
+        setApiResponse(null);
+        reset(); // 重置表單欄位
     };
 
     const ModalOption =[
         'E. coli',
         'S. aureus',
-        'P. aerugionsa',
+        'P. aeruginosa',
     ]
 
-    const [tableData,setTableData] = useState([{
+    const [tableData, setTableData] = useState([{
             id:'',
             sequence:'',
             target:'',
@@ -64,51 +80,90 @@ function ModalForm() {
         }
     ]);
 
-    const handelOption = (e)=>{
+    const handleOption = (e) => {
         setSelectedOption(e.target.value)
     }
 
-    const maxLines = 20000;
+    const maxLines = 20000; // 設定最大允許的輸入行數
 
     const handleInput = (e)=>{
         const textarea = e.target;
         const lines = textarea.value.split('\n');
         if (lines.length > maxLines) {
             // 限制超過最大行數的內容
-            console.log('你輸入資料超過最大行數');
+            alert('你輸入資料超過最大行數');
             const limitedText = lines.slice(0, maxLines).join('\n');
             setValue('fastaData', limitedText); // 更新表單值
             textarea.value = limitedText; // 更新顯示內容
         }
     }
 
-    const handleFormSubmit = async(data)=>{
+    // 發送 FASTA 到 FastAPI
+    const handleFormSubmit = async(data) => {
+
+        if (!data.fastaData) {
+            alert("請輸入 FASTA 序列或上傳檔案");
+            return;
+        }
+
+        // 產生隨機 ID 作為 FASTA 檔案名稱
+        const fastaId = Math.random().toString(36).substr(2, 10);
+
+        // 解析 `fastaData`，轉換成 API 需要的 JSON 格式
         const lines = data.fastaData.trim().split("\n");
-        const result = [];
+        const fastaDataArray = [];
 
         for (let i = 0; i < lines.length; i += 2) {
             const id = lines[i].replace(">", "").trim();
             const sequence = lines[i + 1].trim();
-            result.push({ id, sequence});
+            fastaDataArray.push({ id, sequence });
         }
 
-        // POST api
-        // try {
-        //     const res = await axios.post('url',{
-        //         id:'',
-        //         data:result,
-        //         target:data.target
-        //     });
-        // } catch (error) {
-            
-        // }
-        
+        // 建立 API 需要的 JSON 物件
+        const requestBody = {
+            id: fastaId,
+            data: fastaDataArray,
+            target: data.target || ""
+        };
 
-        setTableData(result);
+        console.log("送出的資料格式：", requestBody);
+
+        // 確保 UI 更新
+        SetTarget(data.target);
+        setTableData(fastaDataArray);
         setIsUseANIA(true);
 
-    }
-  return (
+
+        try {
+            // 發送 POST 請求到遠端伺服器
+            const response = await axios.post(API_URL, requestBody, {
+                headers: { "Content-Type": "application/json" }
+            });
+    
+            console.log("成功送出 FASTA 檔案：", response.data);
+            setApiResponse(response.data.message);
+    
+            // 確保 UI 更新
+            // setTableData(fastaDataArray);
+    
+        } catch (error) {
+            console.error("發送 FASTA 檔案失敗：", error);
+            setApiResponse("上傳失敗，請重試！");
+        }
+
+        // 發送 POST API 請求 (此部分可根據實際需求解開註解)
+        // try {
+        //     const res = await axios.post('url', {
+        //         id: '',
+        //         data: result,
+        //         target: data.target
+        //     });
+        // } catch (error) {
+        //     console.error("API 請求失敗", error);
+        // }
+    };
+
+    return (
     <>
         <div className='container py-5 bg-success'>
             <div className='pt-3   pb-2 custom-border-top bg-secondary' >
@@ -157,9 +212,9 @@ AAARLRLLLYLITRR`}
                                             {...register("fileInput",
                                                 {onChange:(e)=>handleFileChange(e)})
                                             }
-                                            onChange={handleFileChange} // 添加文件上传的 onChange 事件
+                                            onChange={handleFileChange} // 添加文件上傳的 onChange 事件
                                             style={{ display: "none" }} // 隱藏原本的 file 按鈕
-                                            accept=".fasta" // 限制可上传的文件类型
+                                            accept=".fasta" // 限制可上傳的文件類型
                                         />
                                     </div>
                                 </div>
@@ -199,7 +254,7 @@ AAARLRLLLYLITRR`}
                                                     value={option}
                                                     {...register("target", {
                                                         required: true,
-                                                        onChange:(e)=>handelOption(e)
+                                                        onChange:(e)=>handleOption(e)
                                                     })}
                                                     className='form-check-input '
                                                     name='target'
@@ -259,7 +314,7 @@ AAARLRLLLYLITRR`}
                                 <tr key={index}>
                                     <td scope="row">{data.id}</td>
                                     <td>{data.sequence}</td>
-                                    <td>{data.target}</td>
+                                    <td>{target}</td>
                                     <td>{data.activity}</td>
                                 </tr>
                             ))}
