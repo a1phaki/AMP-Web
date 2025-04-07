@@ -10,7 +10,7 @@ __pycache__/
 build/
 develop-eggs/
 dist/
-downloads/
+# downloads/ #暫時拿掉需要測試
 eggs/
 .eggs/
 lib/
