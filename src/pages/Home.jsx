@@ -1,11 +1,11 @@
-import ModalForm from '../component/modalForm';
+import ModelForm from '../component/modelForm';
 import Content from '../component/content';
 
 export default function Home() {
   return (
     <>
       <Content />
-      <ModalForm />
+      <ModelForm />
     </>
   );
 }

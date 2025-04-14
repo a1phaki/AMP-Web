@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
 import axios from 'axios';
 
-function ModalForm() {
+function ModelForm() {
   const { register, handleSubmit, reset, setValue } = useForm();
   const [selectedOption, setSelectedOption] = useState(''); // 儲存選擇的 radio 按鈕選項
   const [fileData, setFileData] = useState({
@@ -75,7 +75,7 @@ function ModalForm() {
       sequence: '',
       sequenceLength: '',
       target: '',
-      activity: '',
+      predictedLogMIC: '',
     },
   ]);
 
@@ -83,7 +83,7 @@ function ModalForm() {
     setSelectedOption(e.target.value);
   };
 
-  const maxLines = 20000; // 設定最大允許的輸入行數
+  const maxLines = 10000; // 設定最大允許的輸入行數
 
   const handleInput = (e) => {
     const textarea = e.target;
@@ -113,6 +113,7 @@ function ModalForm() {
 
   // 發送 FASTA 到 FastAPI
   const handleFormSubmit = async (data) => {
+    console.log('表單資料：', data);
     if (!data.fastaData) {
       alert('請輸入 FASTA 序列或上傳檔案');
       return;
@@ -153,24 +154,51 @@ function ModalForm() {
 
       console.log('成功送出 FASTA 檔案：', response.data);
       setApiResponse(response.data.message);
-
       // 確保 UI 更新
+      const PredictedData = response.data.result.map((item) => ({
+        id: item.ID,
+        sequence: item.Sequence,
+        sequenceLength: item['Sequence Length'],
+        target: item.Target,
+        predictedLogMIC: item['Predicted Log MIC'],
+      }));
+      setTableData(PredictedData);
       // setTableData(fastaDataArray);
     } catch (error) {
       console.error('發送 FASTA 檔案失敗：', error);
       setApiResponse('上傳失敗，請重試！');
+    } finally {
+      console.log(tableData.length);
     }
+  };
 
-    // 發送 POST API 請求 (此部分可根據實際需求解開註解)
-    // try {
-    //     const res = await axios.post('url', {
-    //         id: '',
-    //         data: result,
-    //         target: data.target
-    //     });
-    // } catch (error) {
-    //     console.error("API 請求失敗", error);
-    // }
+  const convertToCSV = (tableData) => {
+    const headers = ['ID', 'Sequence', 'Target', 'Sequence Length', 'Predicted Log MIC'];
+
+    const rows = tableData.map((item) => [
+      item.id,
+      item.sequence,
+      item.target,
+      item.sequenceLength,
+      item.predictedLogMIC,
+    ]);
+
+    return [headers.join(','), ...rows.map((row) => row.join(','))].join('\n');
+  };
+
+  const handleExport = (e) => {
+    e.preventDefault(); // 防止 form 提交（如果按鈕在 form 裡）
+
+    const csvText = convertToCSV(tableData);
+    const blob = new Blob([csvText], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', 'peptides.csv');
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   };
 
   return (
@@ -335,16 +363,19 @@ AAARLRLLLYLITRR`}
             <table className="table-secondary table table-striped ">
               <thead>
                 <tr>
-                  <th scope="col" width="15%">
+                  <th scope="col" width="10%">
                     ID
                   </th>
                   <th scope="col" width="35%">
                     Sequence
                   </th>
-                  <th scope="col" width="15%">
+                  <th scope="col" width="10%" className="text-center">
                     Target
                   </th>
-                  <th scope="col" width="35%">
+                  <th scope="col" width="10%" className="text-center">
+                    Length
+                  </th>
+                  <th scope="col" width="35%" className="text-center">
                     Activity (log MIC, unit: uM)
                   </th>
                 </tr>
@@ -354,8 +385,9 @@ AAARLRLLLYLITRR`}
                   <tr key={index}>
                     <td scope="row">{data.id}</td>
                     <td>{data.sequence}</td>
-                    <td>{target}</td>
-                    <td>{data.activity}</td>
+                    <td className="text-center">{data.target}</td>
+                    <td className="text-center">{data.sequenceLength}</td>
+                    <td className="text-center">{data.predictedLogMIC}</td>
                   </tr>
                 ))}
               </tbody>
@@ -365,7 +397,11 @@ AAARLRLLLYLITRR`}
             className="p-3 d-flex justify-content-end custom-border-bottom"
             style={{ backgroundColor: '#F9FAFB' }}
           >
-            <button type="submit" className="btn btn-primary btn-lg text-white">
+            <button
+              type="button"
+              className="btn btn-primary btn-lg text-white"
+              onClick={handleExport}
+            >
               Export .csv
             </button>
           </div>
@@ -375,4 +411,4 @@ AAARLRLLLYLITRR`}
   );
 }
 
-export default ModalForm;
+export default ModelForm;
