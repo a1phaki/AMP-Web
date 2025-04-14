@@ -21,7 +21,7 @@ function Header() {
   const pageName = getPageName(location.pathname);
 
   return (
-    <div className="sticky-top bg-white">
+    <div className="sticky-top bg-white mx-4">
       <nav className="navbar navbar-expand-lg navbar-light border-bottom">
         <div className="container-fluid g-0 d-flex align-items-center">
           <NavLink className="navbar-brand" to="/">

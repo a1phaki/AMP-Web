@@ -9,8 +9,8 @@ import { Routes, Route } from 'react-router-dom';
 function App() {
   return (
     <>
+      <Header />
       <div className="container">
-        <Header />
         <Routes>
           <Route path="/" element={<Home />}></Route>
           <Route path="/introduction" element={<Intro />}></Route>
