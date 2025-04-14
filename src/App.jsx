@@ -7,21 +7,19 @@ import Download from './pages/Download';
 import { Routes, Route } from 'react-router-dom';
 
 function App() {
-  
-
   return (
     <>
-      <div className='container'>
-        <Header/>
+      <div className="container">
+        <Header />
         <Routes>
-          <Route path='/' element={<Home/>}></Route>
-          <Route path='/introduction' element={<Intro/>}></Route>
-          <Route path='/tutorial' element={<Tutor/>}></Route>
-          <Route path='/download' element={<Download/>}></Route>
+          <Route path="/" element={<Home />}></Route>
+          <Route path="/introduction" element={<Intro />}></Route>
+          <Route path="/tutorial" element={<Tutor />}></Route>
+          <Route path="/download" element={<Download />}></Route>
         </Routes>
       </div>
     </>
-  )
+  );
 }
 
-export default App
+export default App;

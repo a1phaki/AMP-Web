@@ -1,119 +1,132 @@
-@import "bootstrap/scss/functions";
-@import "./variables";
-@import "/node_modules/bootstrap";
-@import "bootstrap/scss/utilities/api";
-@import "./utilities.scss";
-@import "bootstrap/scss/bootstrap.scss";
+@import 'bootstrap/scss/functions';
+@import './variables';
+@import '/node_modules/bootstrap';
+@import 'bootstrap/scss/utilities/api';
+@import './utilities.scss';
+@import 'bootstrap/scss/bootstrap.scss';
 //基礎設置
-@import"./base.scss";
+@import './base.scss';
 @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Noto+Serif+TC:wght@200..900&family=Noto+Serif:ital,wght@0,100..900;1,100..900&display=swap');
-.btn-outline-primary:hover{
-    color: white;
+.btn-outline-primary:hover {
+  color: white;
 }
-.custom-file{
-    width: 100%;
-    height:200px;
-    border:1px dashed #D1D5DB;
+.custom-file {
+  width: 100%;
+  height: 200px;
+  border: 1px dashed #d1d5db;
 }
 
-.custom-select-file{
-    width: 100%;
-    height:80px;
-    border:1px solid #D1D5DB;
-    max-width: 100%; /* 确保整个组件不会超出父容器 */
+.custom-select-file {
+  width: 100%;
+  height: 80px;
+  border: 1px solid #d1d5db;
+  max-width: 100%; /* 确保整个组件不会超出父容器 */
 }
 .file-info {
-    max-width: calc(100% - 50px); /* 限制文字区域宽度，避免溢出边框 */
-    overflow: hidden; /* 隐藏超出的内容 */
+  max-width: calc(100% - 50px); /* 限制文字区域宽度，避免溢出边框 */
+  overflow: hidden; /* 隐藏超出的内容 */
 }
 
 .file-info h4,
 .file-info p {
-white-space: nowrap; /* 防止换行 */
-overflow: hidden; /* 隐藏超出的文本 */
-text-overflow: ellipsis; /* 添加省略号 */
+  white-space: nowrap; /* 防止换行 */
+  overflow: hidden; /* 隐藏超出的文本 */
+  text-overflow: ellipsis; /* 添加省略号 */
 }
-.custom-border{
-    border-bottom-left-radius: 12px;
-    border-bottom-right-radius: 12px;
-    border-top-left-radius: 12px;
-    border-top-right-radius: 12px;
+.custom-border {
+  border-bottom-left-radius: 12px;
+  border-bottom-right-radius: 12px;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
 }
-.custom-border-top{
-    border-top-left-radius: 12px;
-    border-top-right-radius: 12px;
-}
-
-.custom-border-bottom{
-    border-bottom-left-radius: 12px;
-    border-bottom-right-radius: 12px;
+.custom-border-top {
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
 }
 
-.custom-hover:hover{
-    background-color: $warning;
-    border-color: #E57673;
-}
-.img-title{
-    width: 176px;
-}
-table thead tr th{
-    color: $primary !important;
+.custom-border-bottom {
+  border-bottom-left-radius: 12px;
+  border-bottom-right-radius: 12px;
 }
 
-.custom-table{
-    max-height:442px;
-    overflow-y: auto;
-
+.custom-hover:hover {
+  background-color: $warning;
+  border-color: #e57673;
 }
-.nav-link.active{
-    font-weight: $font-weight-medium;
+.img-title {
+  width: 176px;
+}
+table thead tr th {
+  color: $primary !important;
+}
+
+.custom-table {
+  max-height: 442px;
+  overflow-y: auto;
+}
+.nav-link.active {
+  font-weight: $font-weight-medium;
 }
 
 .custom-table-secondary {
-    --bs-table-color: #000;
-    --bs-table-bg: #FCFAFA;
-    --bs-table-border-color: #FCFAFA;
-    --bs-table-striped-bg: #fff;
-    --bs-table-striped-color: #000;
-    --bs-table-active-bg: #373b3e;
-    --bs-table-active-color: #fff;
-    --bs-table-hover-bg: #FFF7F5;
-    --bs-table-hover-color: #000;
-    
-    color: var(--bs-table-color);
-    border-color: var(--bs-table-border-color);
-    border-radius: 10px; /* 讓表格有圓角 */
-    overflow: hidden;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); /* 陰影讓表格更立體 */
+  --bs-table-color: #000;
+  --bs-table-bg: #fcfafa;
+  --bs-table-border-color: #fcfafa;
+  --bs-table-striped-bg: #fff;
+  --bs-table-striped-color: #000;
+  --bs-table-active-bg: #373b3e;
+  --bs-table-active-color: #fff;
+  --bs-table-hover-bg: #fff7f5;
+  --bs-table-hover-color: #000;
+
+  color: var(--bs-table-color);
+  border-color: var(--bs-table-border-color);
+  border-radius: 10px; /* 讓表格有圓角 */
+  overflow: hidden;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); /* 陰影讓表格更立體 */
 }
 
 /* 讓 table 保持圓角 */
 .custom-table-secondary thead tr:first-child th:first-child {
-    border-top-left-radius: 10px;
+  border-top-left-radius: 10px;
 }
 .custom-table-secondary thead tr:first-child th:last-child {
-    border-top-right-radius: 10px;
+  border-top-right-radius: 10px;
 }
 .custom-table-secondary tbody tr:last-child td:first-child {
-    border-bottom-left-radius: 10px;
+  border-bottom-left-radius: 10px;
 }
 .custom-table-secondary tbody tr:last-child td:last-child {
-    border-bottom-right-radius: 10px;
+  border-bottom-right-radius: 10px;
 }
 
-
-.custom-box{
-    height: 80px;
-    background-color: #fff;
+.custom-box {
+  height: 80px;
+  background-color: #fff;
 }
 
-.custom-btn{
-    position: relative;
+.custom-btn {
+  position: relative;
 }
 
 .custom-icon {
-    position: relative;
-    right: 10px;  /* 控制 X 軸位置，可自行調整 */
-    top: 28px; /* 控制 Y 軸位置，可自行調整 */
-    color: #4d5154; /* 設定顏色 */
+  position: relative;
+  right: 10px; /* 控制 X 軸位置，可自行調整 */
+  top: 28px; /* 控制 Y 軸位置，可自行調整 */
+  color: #4d5154; /* 設定顏色 */
+}
+
+/* 禁用 NameCell 的 hover 效果 */
+.name-cell {
+  background-color: inherit; /* 保持背景色继承，避免受到 hover 影响 */
+}
+
+/* 只针对 Train 和 Test 行的 hover 效果 */
+.train-test-cell:hover {
+  background-color: #f1f1f1; /* 为 Train 和 Test 行设置 hover 背景色 */
+}
+
+/* 全局 table-hover hover 样式 */
+.table-container .table-hover tbody tr:hover {
+  background-color: #e9ecef; /* 整体 hover 背景色 */
 }
