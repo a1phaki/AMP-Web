@@ -16,8 +16,8 @@ export default function Tutor() {
   const ModalOption = ['E. coli', 'S. aureus', 'P. aerugionsa'];
   return (
     <>
-      <div className="container py-5 bg-success">
-        <div className="row mx-1">
+      <div className="container py-5 ">
+        <div className="row mx-1 border border-3 border-secondary rounded-4">
           <div className="pt-3  pb-2 custom-border-top bg-secondary">
             <h2 className="ps-5 h5 fw-medium">User Guide</h2>
           </div>
@@ -114,9 +114,6 @@ export default function Tutor() {
               </div>
             </div>
           </div>
-        </div>
-        <div className="row mx-1 mt-9">
-          <div className="col"></div>
         </div>
       </div>
     </>

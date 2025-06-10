@@ -134,7 +134,7 @@ export default function Performance() {
   ];
 
   return (
-    <>
+    <div className="border border-3 border-secondary rounded-4">
       <div className="pt-3  pb-2 custom-border-top bg-secondary">
         <h2 className="ps-5 h5 fw-medium">Performance</h2>
       </div>
@@ -240,6 +240,6 @@ export default function Performance() {
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 }

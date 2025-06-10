@@ -1,12 +1,12 @@
 function Content() {
   return (
     <>
-      <div className=" bg-success px-3 py-5">
+      <div className="border border-3 border-secondary py-4 rounded-4 mt-5">
         <div className="bg-white custom-border">
-          <div className="d-flex justify-content-center py-5">
-            <img src="img/Workflow.png" className="object-fit-cover px-5" width="100%" alt="主圖" />
+          <div className="d-flex justify-content-center py-3 mx-5">
+            <img src="img/Workflow.png" className="object-fit-cover" width="90%" alt="主圖" />
           </div>
-          <h4 className="pb-5 px-5">
+          <h4 className="pb-3 pt-4 px-5 " style={{ 'text-align': 'justify' }}>
             The overuse of antibiotics has led to significant microbial resistance, necessitating
             alternative therapies. Antimicrobial peptides (AMPs) are small proteins effective
             against various pathogens, making them promising candidates for new anti-infective

@@ -14,7 +14,7 @@ function ModelForm() {
 
   const [isUseANIA, setIsUseANIA] = useState(false);
   const [isSelected, setIsSelected] = useState(false);
-  const [target, SetTarget] = useState('');
+  const [, SetTarget] = useState('');
   const [projectName, setProjectName] = useState(''); // 儲存專案名稱
   const [, setFileContent] = useState(''); // 用於存儲檔案內容
   const [, setApiResponse] = useState(null); // 儲存 API 回應結果
@@ -203,155 +203,157 @@ function ModelForm() {
 
   return (
     <>
-      <div className="container py-5 bg-success">
-        <div className="pt-3   pb-2 custom-border-top bg-secondary">
-          <h2 className=" ps-3 fs-bold h5">USE ANIA</h2>
-        </div>
-        <div className="bg-white px-4 pt-1 pb-4 custom-border-bottom">
-          <form onSubmit={handleSubmit(handleFormSubmit)}>
-            {/* Textarea 與檔案選擇組 */}
-            <div className="row border-bottom my-3 border-2">
-              <div className="col-12 d-flex">
-                <h4 className="text-primary fw-semibold mb-3 me-3">Step1</h4>
-                <h5 className="text-black fw-normal pt-1">
-                  You can paste a Protein sequence or several sequences with FASTA format into the
-                  field below
-                </h5>
-              </div>
+      <div className="py-5">
+        <div className="border d-block border-secondary rounded-4 border-3">
+          <div className="pt-3 pb-2 custom-border-top bg-secondary">
+            <h2 className=" ps-3 fs-bold h5">USE ANIA</h2>
+          </div>
+          <div className="bg-white px-4 pt-1 pb-4 custom-border-bottom">
+            <form onSubmit={handleSubmit(handleFormSubmit)}>
+              {/* Textarea 與檔案選擇組 */}
+              <div className="row border-bottom my-3 border-2">
+                <div className="col-12 d-flex">
+                  <h4 className="text-primary fw-semibold mb-3 me-3">Step1</h4>
+                  <h5 className="text-black fw-normal pt-1">
+                    You can paste a Protein sequence or several sequences with FASTA format into the
+                    field below
+                  </h5>
+                </div>
 
-              <div className="col-6">
-                <textarea
-                  {...register('fastaData', {
-                    onChange: (e) => handleInput(e), // 將行數限制邏輯加入到 onChange
-                  })}
-                  placeholder={`# Enter your sequences in FASTA format:
+                <div className="col-6">
+                  <textarea
+                    {...register('fastaData', {
+                      onChange: (e) => handleInput(e), // 將行數限制邏輯加入到 onChange
+                    })}
+                    placeholder={`# Enter your sequences in FASTA format:
 >DBAASP_5613
 AAAAAAAAAAGIGKFLHSAKKFGKAFVGEIMNS
 >DBAASP_11942
 AAAARRRR
 >DBAASP_13251
 AAARLRLLLYLITRR`}
-                  rows="12"
-                  style={{ width: '100%', marginBottom: '10px' }}
-                  className="form-control"
-                />
-              </div>
-              <div className="row col-6">
-                <div className="col-1 d-flex align-items-center">
-                  <h4>or</h4>
+                    rows="12"
+                    style={{ width: '100%', marginBottom: '10px' }}
+                    className="form-control"
+                  />
                 </div>
-                <div className="col-11">
-                  <div className="custom-file py-5">
-                    <h6 className="text-center pb-4">Choose a file or drag & drop</h6>
-                    <div className="d-flex justify-content-center ">
-                      <label
-                        htmlFor="fileInput"
-                        className="text-center h4 btn btn-outline-primary btn-lg"
-                      >
-                        Choose a file
-                      </label>
-                      <input
-                        id="fileInput"
-                        type="file"
-                        {...register('fileInput', { onChange: (e) => handleFileChange(e) })}
-                        onChange={handleFileChange} // 添加文件上傳的 onChange 事件
-                        style={{ display: 'none' }} // 隱藏原本的 file 按鈕
-                        accept=".fasta" // 限制可上傳的文件類型
-                      />
-                    </div>
+                <div className="row col-6">
+                  <div className="col-1 d-flex align-items-center">
+                    <h4>or</h4>
                   </div>
-                  <div className="custom-select-file my-3 d-flex align-items-center ">
-                    <div className="custom-border border-1 border-danger border ms-7">
-                      <InsertDriveFileIcon className="m-3" sx={{ color: '#F38986' }} />
-                    </div>
-                    {isSelected ? (
-                      <div className="ps-3 file-info">
-                        <h4 className="mb-0 pt-3">{fileData.fileName}</h4>
-                        <p className="">{`${fileData.fileSize} bytes`}</p>
-                      </div>
-                    ) : (
-                      <div className="ps-3 file-info">
-                        <h4 className="mb-0">No file selected</h4>
-                      </div>
-                    )}
-                  </div>
-                  <p className=" text-black-50" style={{ fontSize: '14px' }}>
-                    Upload a plain text file containing protein sequence(s) in FASTA format.
-                  </p>
-                </div>
-              </div>
-            </div>
-            <div className="row pb-1 my-2 ">
-              <div className="col-6">
-                <div className="d-flex">
-                  <h4 className="text-primary fw-semibold mb-3 me-3">Step2</h4>
-                  <h5 className="text-black fw-normal pt-1">Select type</h5>
-                </div>
-                <div className="row">
-                  {ModalOption.map((option, index) => (
-                    <div className="col-4" key={index}>
-                      <div
-                        className={`custom-border custom-hover form-check border-1 py-2 border-primary border ${
-                          selectedOption === option ? 'bg-info ' : ''
-                        }`}
-                      >
-                        <label style={{ display: 'block' }} className="form-check-label ms-2">
-                          <input
-                            type="radio"
-                            value={option}
-                            {...register('target', {
-                              required: true,
-                              onChange: (e) => handleOption(e),
-                            })}
-                            className="form-check-input "
-                            name="target"
-                            checked={selectedOption === option} // 根據選擇的選項來設定
-                          />
-                          {option}
+                  <div className="col-11">
+                    <div className="custom-file py-5">
+                      <h6 className="text-center pb-4">Choose a file or drag & drop</h6>
+                      <div className="d-flex justify-content-center ">
+                        <label
+                          htmlFor="fileInput"
+                          className="text-center h4 btn btn-outline-primary btn-lg"
+                        >
+                          Choose a file
                         </label>
+                        <input
+                          id="fileInput"
+                          type="file"
+                          {...register('fileInput', { onChange: (e) => handleFileChange(e) })}
+                          onChange={handleFileChange} // 添加文件上傳的 onChange 事件
+                          style={{ display: 'none' }} // 隱藏原本的 file 按鈕
+                          accept=".fasta" // 限制可上傳的文件類型
+                        />
                       </div>
                     </div>
-                  ))}
+                    <div className="custom-select-file my-3 d-flex align-items-center ">
+                      <div className="custom-border border-1 border-danger border ms-7">
+                        <InsertDriveFileIcon className="m-3" sx={{ color: '#F38986' }} />
+                      </div>
+                      {isSelected ? (
+                        <div className="ps-3 file-info">
+                          <h4 className="mb-0 pt-3">{fileData.fileName}</h4>
+                          <p className="">{`${fileData.fileSize} bytes`}</p>
+                        </div>
+                      ) : (
+                        <div className="ps-3 file-info">
+                          <h4 className="mb-0">No file selected</h4>
+                        </div>
+                      )}
+                    </div>
+                    <p className=" text-black-50" style={{ fontSize: '14px' }}>
+                      Upload a plain text file containing protein sequence(s) in FASTA format.
+                    </p>
+                  </div>
                 </div>
               </div>
-              <div className="col-6">
-                <div className="d-flex">
-                  <h4 className="text-primary fw-semibold mb-3 me-3">Step3</h4>
-                  <h5 className="text-black fw-normal pt-1">Input your project name</h5>
+              <div className="row pb-1 my-2 ">
+                <div className="col-6">
+                  <div className="d-flex">
+                    <h4 className="text-primary fw-semibold mb-3 me-3">Step2</h4>
+                    <h5 className="text-black fw-normal pt-1">Select type</h5>
+                  </div>
+                  <div className="row">
+                    {ModalOption.map((option, index) => (
+                      <div className="col-4" key={index}>
+                        <div
+                          className={`custom-border custom-hover form-check border-1 py-2 border-primary border ${
+                            selectedOption === option ? 'bg-info ' : ''
+                          }`}
+                        >
+                          <label style={{ display: 'block' }} className="form-check-label ms-2">
+                            <input
+                              type="radio"
+                              value={option}
+                              {...register('target', {
+                                required: true,
+                                onChange: (e) => handleOption(e),
+                              })}
+                              className="form-check-input "
+                              name="target"
+                              checked={selectedOption === option} // 根據選擇的選項來設定
+                            />
+                            {option}
+                          </label>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
                 </div>
-                <input
-                  type="text"
-                  {...register('projectName', { required: false })}
-                  value={projectName}
-                  onChange={(e) => setProjectName(e.target.value)}
-                  placeholder="Untitled Project"
-                  style={{ width: '100%' }}
-                  className="form-control py-2"
-                />
+                <div className="col-6">
+                  <div className="d-flex">
+                    <h4 className="text-primary fw-semibold mb-3 me-3">Step3</h4>
+                    <h5 className="text-black fw-normal pt-1">Input your project name</h5>
+                  </div>
+                  <input
+                    type="text"
+                    {...register('projectName', { required: false })}
+                    value={projectName}
+                    onChange={(e) => setProjectName(e.target.value)}
+                    placeholder="Untitled Project"
+                    style={{ width: '100%' }}
+                    className="form-control py-2"
+                  />
+                </div>
               </div>
-            </div>
-            <div className="row " style={{ backgroundColor: '#F9FAFB' }}>
-              <div className="col p-3 d-flex justify-content-end custom-border-bottom">
-                <button
-                  type="button"
-                  className="btn btn-primary btn-lg text-white me-4"
-                  onClick={testDataInput}
-                >
-                  Test Data
-                </button>
-                <button
-                  type="button"
-                  className="btn btn-outline-primary btn-lg me-4"
-                  onClick={clearFields}
-                >
-                  Clear fields
-                </button>
-                <button type="submit" className="btn btn-primary btn-lg text-white">
-                  Start ANIA
-                </button>
+              <div className="row">
+                <div className="col p-3 d-flex justify-content-end custom-border-bottom">
+                  <button
+                    type="button"
+                    className="btn btn-primary btn-lg text-white me-4"
+                    onClick={testDataInput}
+                  >
+                    Test Data
+                  </button>
+                  <button
+                    type="button"
+                    className="btn btn-outline-primary btn-lg me-4"
+                    onClick={clearFields}
+                  >
+                    Clear fields
+                  </button>
+                  <button type="submit" className="btn btn-primary btn-lg text-white">
+                    Start ANIA
+                  </button>
+                </div>
               </div>
-            </div>
-          </form>
+            </form>
+          </div>
         </div>
       </div>
       {isUseANIA && (

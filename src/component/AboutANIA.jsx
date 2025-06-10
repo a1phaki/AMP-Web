@@ -1,6 +1,6 @@
 export default function AboutANIA() {
   return (
-    <>
+    <div className="border border-3 border-secondary rounded-4">
       <div className="pt-3  pb-2 custom-border-top bg-secondary">
         <h2 className="ps-5 h5 fw-medium">About ANIA</h2>
       </div>
@@ -17,6 +17,6 @@ export default function AboutANIA() {
           Staphylococcus aureus, Escherichia coli, and Pseudomonas aeruginosa.
         </h5>
       </div>
-    </>
+    </div>
   );
 }

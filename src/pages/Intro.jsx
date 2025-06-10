@@ -5,7 +5,7 @@ import Performance from '../component/Performance';
 export default function Intro() {
   return (
     <>
-      <div className="container py-5 bg-success">
+      <div className="container py-5">
         <div className="row mx-1 d-flex align-items-stretch">
           <div className="col-6 d-flex flex-column">
             <AboutANIA />
