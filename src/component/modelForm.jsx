@@ -2,6 +2,8 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import Loading from './loading';
 
 function ModelForm() {
   const { register, handleSubmit, reset, setValue } = useForm();
@@ -12,12 +14,13 @@ function ModelForm() {
     fileContent: '',
   });
 
-  const [isUseANIA, setIsUseANIA] = useState(false);
+  const [isLoading, setIsLoading] = useState(false); // 用於顯示載入狀態
   const [isSelected, setIsSelected] = useState(false);
-  const [, SetTarget] = useState('');
+  const [, setTarget] = useState('');
   const [projectName, setProjectName] = useState(''); // 儲存專案名稱
   const [, setFileContent] = useState(''); // 用於存儲檔案內容
   const [, setApiResponse] = useState(null); // 儲存 API 回應結果
+  const navigate = useNavigate();
 
   // FastAPI 伺服器地址
   const API_URL = 'http://140.113.120.176:5000/api/upload-fasta';
@@ -69,16 +72,6 @@ function ModelForm() {
 
   const ModalOption = ['E. coli', 'S. aureus', 'P. aeruginosa'];
 
-  const [tableData, setTableData] = useState([
-    {
-      id: '',
-      sequence: '',
-      sequenceLength: '',
-      target: '',
-      predictedLogMIC: '',
-    },
-  ]);
-
   const handleOption = (e) => {
     setSelectedOption(e.target.value);
   };
@@ -103,7 +96,7 @@ function ModelForm() {
       .then((text) => {
         setValue('fastaData', text);
         setSelectedOption('E. coli');
-        SetTarget('E. coli');
+        setTarget('E. coli');
         setProjectName('Test');
       })
       .catch((err) => {
@@ -142,10 +135,8 @@ function ModelForm() {
     console.log('送出的資料格式：', requestBody);
 
     // 確保 UI 更新
-    SetTarget(data.target);
-    setTableData(fastaDataArray);
-    setIsUseANIA(true);
-
+    setTarget(data.target);
+    setIsLoading(true); // 開始載入狀態
     try {
       // 發送 POST 請求到遠端伺服器
       const response = await axios.post(API_URL, requestBody, {
@@ -162,47 +153,18 @@ function ModelForm() {
         target: item.Target,
         predictedLogMIC: item['Predicted Log MIC'],
       }));
-      setTableData(PredictedData);
-      // setTableData(fastaDataArray);
+      navigate(`/${fastaId}`, { state: { fastaId, PredictedData } });
     } catch (error) {
       console.error('發送 FASTA 檔案失敗：', error);
       setApiResponse('上傳失敗，請重試！');
     } finally {
-      console.log(tableData.length);
+      setIsLoading(false); // 停止載入狀態
     }
-  };
-
-  const convertToCSV = (tableData) => {
-    const headers = ['ID', 'Sequence', 'Target', 'Sequence Length', 'Predicted Log MIC'];
-
-    const rows = tableData.map((item) => [
-      item.id,
-      item.sequence,
-      item.target,
-      item.sequenceLength,
-      item.predictedLogMIC,
-    ]);
-
-    return [headers.join(','), ...rows.map((row) => row.join(','))].join('\n');
-  };
-
-  const handleExport = (e) => {
-    e.preventDefault(); // 防止 form 提交（如果按鈕在 form 裡）
-
-    const csvText = convertToCSV(tableData);
-    const blob = new Blob([csvText], { type: 'text/csv;charset=utf-8;' });
-    const url = URL.createObjectURL(blob);
-
-    const link = document.createElement('a');
-    link.href = url;
-    link.setAttribute('download', 'peptides.csv');
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
   };
 
   return (
     <>
+      {isLoading && <Loading />}
       <div className="py-5">
         <div className="border d-block border-secondary rounded-4 border-3">
           <div className="pt-3 pb-2 custom-border-top bg-secondary">
@@ -356,59 +318,6 @@ AAARLRLLLYLITRR`}
           </div>
         </div>
       </div>
-      {isUseANIA && (
-        <div className="container py-5 bg-success">
-          <div className="pt-3  pb-2 custom-border-top bg-secondary">
-            <h2 className="ps-3 fs-bold h5">RESULT TABLE</h2>
-          </div>
-          <div className="bg-white p-4 custom-table">
-            <table className="table-secondary table table-striped ">
-              <thead>
-                <tr>
-                  <th scope="col" width="10%">
-                    ID
-                  </th>
-                  <th scope="col" width="35%">
-                    Sequence
-                  </th>
-                  <th scope="col" width="10%" className="text-center">
-                    Target
-                  </th>
-                  <th scope="col" width="10%" className="text-center">
-                    Length
-                  </th>
-                  <th scope="col" width="35%" className="text-center">
-                    Activity (log MIC, unit: uM)
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {tableData.map((data, index) => (
-                  <tr key={index}>
-                    <td scope="row">{data.id}</td>
-                    <td>{data.sequence}</td>
-                    <td className="text-center">{data.target}</td>
-                    <td className="text-center">{data.sequenceLength}</td>
-                    <td className="text-center">{data.predictedLogMIC}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-          <div
-            className="p-3 d-flex justify-content-end custom-border-bottom"
-            style={{ backgroundColor: '#F9FAFB' }}
-          >
-            <button
-              type="button"
-              className="btn btn-primary btn-lg text-white"
-              onClick={handleExport}
-            >
-              Export .csv
-            </button>
-          </div>
-        </div>
-      )}
     </>
   );
 }
