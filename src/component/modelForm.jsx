@@ -3,7 +3,8 @@ import { useForm } from 'react-hook-form';
 import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import Loading from './loading';
+import HoverIconButton from './HoverIconButton';
+import Loading from './Loading';
 
 function ModelForm() {
   const { register, handleSubmit, reset, setValue } = useForm();
@@ -39,9 +40,33 @@ function ModelForm() {
         let lines = content.split('\n');
 
         if (lines.length > maxLines) {
-          alert(`檔案內容超過 ${maxLines} 行，只會保留前 ${maxLines} 行`);
-          content = lines.slice(0, maxLines).join('\n'); // 限制行數
-        }
+          const message = `The uploaded file contains more than <strong>5000 AMP sequences</strong>.<br>Only the <strong>first 5000 sequences</strong> will be processed.`;
+
+          // 自訂 alert 視窗樣式
+          const customAlert = document.createElement('div');
+          customAlert.style.position = 'fixed';
+          customAlert.style.top = '30%';
+          customAlert.style.left = '50%';
+          customAlert.style.transform = 'translate(-50%, -50%)';
+          customAlert.style.background = 'white';
+          customAlert.style.padding = '20px';
+          customAlert.style.border = '1px solid #ccc';
+          customAlert.style.borderRadius = '10px';
+          customAlert.style.boxShadow = '0 4px 10px rgba(0,0,0,0.1)';
+          customAlert.style.zIndex = '9999';
+          customAlert.style.fontFamily = 'Arial, sans-serif';
+          customAlert.style.fontSize = '20px';
+          customAlert.style.textAlign = 'center';
+          customAlert.innerHTML = `
+            <p style="margin: 0;">${message}</p>
+            <button class="btn btn-primary btn-lg text-white mt-3" onclick="this.parentElement.remove()">OK</button>
+          `;
+
+          document.body.appendChild(customAlert);
+
+          // 限制最多 5000 行
+          content = lines.slice(0, maxLines).join('\n');
+        } // 限制行數
 
         // 更新 fileContent 狀態
         setFileContent(content);
@@ -97,7 +122,7 @@ function ModelForm() {
         setValue('fastaData', text);
         setSelectedOption('E. coli');
         setTarget('E. coli');
-        setProjectName('Test');
+        setProjectName('ANIA_Example');
       })
       .catch((err) => {
         console.error('錯誤:', err);
@@ -168,9 +193,9 @@ function ModelForm() {
       <div className="py-5">
         <div className="border d-block border-secondary rounded-4 border-3">
           <div className="pt-3 pb-2 custom-border-top bg-secondary">
-            <h2 className=" ps-3 fs-bold h5">USE ANIA</h2>
+            <h2 className=" ps-3 fs-bold h4">USE ANIA</h2>
           </div>
-          <div className="bg-white px-4 pt-1 pb-4 custom-border-bottom">
+          <div className="bg-white px-4 pt-1 pb-3 custom-border-bottom">
             <form onSubmit={handleSubmit(handleFormSubmit)}>
               {/* Textarea 與檔案選擇組 */}
               <div className="row border-bottom my-3 border-2">
@@ -205,7 +230,7 @@ AAARLRLLLYLITRR`}
                   </div>
                   <div className="col-11">
                     <div className="custom-file py-5">
-                      <h6 className="text-center pb-4">Choose a file or drag & drop</h6>
+                      <h4 className="text-center pb-4">Choose a file or drag & drop</h4>
                       <div className="d-flex justify-content-center ">
                         <label
                           htmlFor="fileInput"
@@ -258,7 +283,7 @@ AAARLRLLLYLITRR`}
                             selectedOption === option ? 'bg-info ' : ''
                           }`}
                         >
-                          <label style={{ display: 'block' }} className="form-check-label ms-2">
+                          <label style={{ display: 'block', fontSize: '15px'}} className="form-check-label ms-2">
                             <input
                               type="radio"
                               value={option}
@@ -293,25 +318,36 @@ AAARLRLLLYLITRR`}
                   />
                 </div>
               </div>
+            </form>
+          </div>
+          <div className="bg-light px-4 pt-0 pb-0 custom-border-bottom">
+            <form onSubmit={handleSubmit(handleFormSubmit)}>
               <div className="row">
-                <div className="col p-3 d-flex justify-content-end custom-border-bottom">
-                  <button
-                    type="button"
-                    className="btn btn-primary btn-lg text-white me-4"
+                <div className="col p-3 d-flex justify-content-end">
+                  <HoverIconButton
+                    label="Example"
+                    defaultIcon="/img/file_pink.png"
+                    hoverIcon="/img/file_white.png"
                     onClick={testDataInput}
-                  >
-                    Test Data
-                  </button>
-                  <button
-                    type="button"
-                    className="btn btn-outline-primary btn-lg me-4"
+                    className="btn btn-outline-primary btn-lg me-3"
+                    iconStyle={{ marginLeft: '-5px', marginRight: '8px', transform: 'translateY(-1px)' }}
+                  />
+                  <HoverIconButton
+                    label="Clear"
+                    defaultIcon="/img/clear_pink.png"
+                    hoverIcon="/img/clear_white.png"
                     onClick={clearFields}
-                  >
-                    Clear fields
-                  </button>
-                  <button type="submit" className="btn btn-primary btn-lg text-white">
-                    Start ANIA
-                  </button>
+                    className="btn btn-outline-primary btn-lg me-3"
+                    iconStyle={{ marginLeft: '-5px', marginRight: '2px', transform: 'translateY(-1.5px)' }}
+                  />
+                  <HoverIconButton
+                    label="Start ANIA"
+                    defaultIcon="/img/upload.png"
+                    hoverIcon="/img/upload.png"
+                    onClick={handleSubmit(handleFormSubmit)}
+                    className="btn btn-primary btn-lg text-white"
+                    iconStyle={{ marginLeft: '-2px', marginRight: '8px', transform: 'translateY(-2.0px)' }}
+                  />
                 </div>
               </div>
             </form>
