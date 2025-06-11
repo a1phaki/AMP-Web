@@ -10,7 +10,7 @@ function ResultPage() {
   const micChartRef = useRef(null);
   const violinRef = useRef(null);
 
-  const { projectId, PredictedData } = location.state || {};
+  const { projectId, PredictedData, projectName } = location.state || {};
   const tableData = PredictedData || [];
 
   // === 基礎統計資料 ===
@@ -27,9 +27,9 @@ function ResultPage() {
 
   const minMIC = Math.min(...predictedMICs).toFixed(4);
   const maxMIC = Math.max(...predictedMICs).toFixed(4);
-  const avgMIC = (
-    predictedMICs.reduce((a, b) => a + b, 0) / (predictedMICs.length || 1)
-  ).toFixed(4);
+  const avgMIC = (predictedMICs.reduce((a, b) => a + b, 0) / (predictedMICs.length || 1)).toFixed(
+    4,
+  );
 
   const lowCount = predictedMICs.filter((v) => v < 1).length;
   const highCount = predictedMICs.filter((v) => v > 2).length;
@@ -80,7 +80,7 @@ function ResultPage() {
         type: 'bar',
       },
       color: {
-        pattern: ['#FF6B6B'] // 🎨 柱狀圖主色
+        pattern: ['#FF6B6B'], // 🎨 柱狀圖主色
       },
       axis: {
         x: {
@@ -116,8 +116,8 @@ function ResultPage() {
         show: false,
       },
       size: {
-        width: 350,  // 寬度（單位為 px）
-        height: 280  // 高度（單位為 px）
+        width: 350, // 寬度（單位為 px）
+        height: 280, // 高度（單位為 px）
       },
       padding: {
         top: 0,
@@ -156,35 +156,35 @@ function ResultPage() {
 
     Plotly.newPlot(violinRef.current, [trace], layout, { displayModeBar: false });
 
-  //   const micCategories = micBins.map((bin) => bin.label);
-  //   const micCounts = ['MIC Count', ...micBins.map((bin) => bin.count)];
+    //   const micCategories = micBins.map((bin) => bin.label);
+    //   const micCounts = ['MIC Count', ...micBins.map((bin) => bin.count)];
 
-  //   c3.generate({
-  //     bindto: micChartRef.current,
-  //     data: {
-  //       columns: [micCounts],
-  //       type: 'bar',
-  //     },
-  //     axis: {
-  //       x: {
-  //         type: 'category',
-  //         categories: micCategories,
-  //         tick: {
-  //           rotate: 75,
-  //           multiline: false,
-  //         },
-  //         height: 100,
-  //       },
-  //       y: {
-  //         label: 'Count',
-  //       },
-  //     },
-  //     bar: {
-  //       width: {
-  //         ratio: 1,
-  //       },
-  //     },
-  //   });
+    //   c3.generate({
+    //     bindto: micChartRef.current,
+    //     data: {
+    //       columns: [micCounts],
+    //       type: 'bar',
+    //     },
+    //     axis: {
+    //       x: {
+    //         type: 'category',
+    //         categories: micCategories,
+    //         tick: {
+    //           rotate: 75,
+    //           multiline: false,
+    //         },
+    //         height: 100,
+    //       },
+    //       y: {
+    //         label: 'Count',
+    //       },
+    //     },
+    //     bar: {
+    //       width: {
+    //         ratio: 1,
+    //       },
+    //     },
+    //   });
   }, [tableData]);
 
   const convertToCSV = (tableData) => {
@@ -221,14 +221,38 @@ function ResultPage() {
         <div className="bg-white pt-4 px-4 pb-1 mb-2">
           <div className="row">
             <div className="col-4">
-              <ul className="list-unstyled border-start ps-3 border-3 border-primary" style={{ fontSize: '1.0rem' }}>
-                <li><strong>Project ID: </strong>{projectId}</li>
-                <li><strong>Target: </strong>{target}</li>
-                <li><strong>Number of sequences: </strong>{tableData.length}</li>
-                <li><strong>Sequence Length: </strong>{minLen} ~ {maxLen} (avg: {avgLen})</li>
-                <li><strong>Predicted log MIC: </strong>{minMIC} ~ {maxMIC} (avg: {avgMIC})</li>
-                <li><strong>Low MIC count: </strong>{lowCount} (log MIC &lt; 1)</li>
-                <li><strong>High MIC count: </strong>{highCount} (log MIC &gt; 2)</li>
+              <ul
+                className="list-unstyled border-start ps-3 border-3 border-primary"
+                style={{ fontSize: '1.0rem' }}
+              >
+                <li>
+                  <strong>Project ID: </strong>
+                  {projectName}
+                </li>
+                <li>
+                  <strong>Target: </strong>
+                  {target}
+                </li>
+                <li>
+                  <strong>Number of sequences: </strong>
+                  {tableData.length}
+                </li>
+                <li>
+                  <strong>Sequence Length: </strong>
+                  {minLen} ~ {maxLen} (avg: {avgLen})
+                </li>
+                <li>
+                  <strong>Predicted log MIC: </strong>
+                  {minMIC} ~ {maxMIC} (avg: {avgMIC})
+                </li>
+                <li>
+                  <strong>Low MIC count: </strong>
+                  {lowCount} (log MIC &lt; 1)
+                </li>
+                <li>
+                  <strong>High MIC count: </strong>
+                  {highCount} (log MIC &gt; 2)
+                </li>
               </ul>
             </div>
             <div className="col-4">

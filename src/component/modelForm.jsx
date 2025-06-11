@@ -180,7 +180,7 @@ function ModelForm() {
         target: item.Target,
         predictedLogMIC: item['Predicted Log MIC'],
       }));
-      navigate(`/${fastaId}`, { state: { fastaId, PredictedData } });
+      navigate(`/${fastaId}`, { state: { fastaId, PredictedData, projectName } });
     } catch (error) {
       console.error('發送 FASTA 檔案失敗：', error);
       setApiResponse('上傳失敗，請重試！');

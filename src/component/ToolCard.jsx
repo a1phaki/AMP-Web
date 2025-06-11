@@ -14,22 +14,27 @@ function ToolCard() {
           <div
             className="me-4"
             style={{
-                width: '70px',
-                height: '70px',
-                borderRadius: '16px',
-                backgroundColor: tool.bgColor,
-                overflow: 'hidden',
+              width: '70px',
+              height: '70px',
+              borderRadius: '16px',
+              backgroundColor: tool.bgColor,
+              overflow: 'hidden',
             }}
-            >
+          >
             <img
-                src={tool.icon}
-                alt="ANIA icon"
-                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+              src={tool.icon}
+              alt="ANIA icon"
+              style={{ width: '100%', height: '100%', objectFit: 'cover' }}
             />
-            </div>
+          </div>
           <div>
-            <h5 className="mt-1 mb-1 fw-bold" style={{ fontSize: '1.8rem' }}>{tool.title}</h5>
-            <p className="mt-1 mb-4 text-muted" style={{ fontSize: '1.2rem', textAlign: 'justify' }}>
+            <h5 className="mt-1 mb-1 fw-bold" style={{ fontSize: '1.8rem' }}>
+              {tool.title}
+            </h5>
+            <p
+              className="mt-1 mb-4 text-muted"
+              style={{ fontSize: '1.2rem', textAlign: 'justify' }}
+            >
               {tool.description}
             </p>
           </div>
