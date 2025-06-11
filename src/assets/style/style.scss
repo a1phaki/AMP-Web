@@ -130,3 +130,43 @@ table thead tr th {
 .table-container .table-hover tbody tr:hover {
   background-color: #e9ecef; /* 整体 hover 背景色 */
 }
+
+/* WelcomeBanner 樣式區塊 */
+.welcome-banner {
+  background-color: #fff3c1;              /* 伊甸學園風格黃 */
+  border: 3px solid #fff3c1;              /* 邊框顏色與背景一致 */
+  border-radius: 1rem;                    /* 圓角 */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);  /* 柔和陰影 */
+  padding: 1.0rem 2rem;                   /* 內距調整 */
+  margin-top: 2rem;                       /* 上方間距 */
+  text-align: center;                     /* 文字置中 */
+  font-size: 1.2rem;
+  font-family: Arial, sans-serif;
+  color: #3b3b3b;                         /* 柔和深灰文字 */
+}
+
+/* 自訂導航字體樣式 */
+.nav-text {
+  font-size: 1.3rem;    /* 更大字體 */
+  font-weight: 600;     /* 粗體一點更醒目 */
+}
+
+/* 僅選擇刻度的 tick 文字 */
+.c3-axis-x .tick text,
+.c3-axis-y .tick text {
+  font-size: 14px !important;
+  fill: #333 !important;
+}
+
+/* 僅選擇軸標籤的文字 */
+.c3-axis-x-label,
+.c3-axis-y-label {
+  font-size: 15px !important;
+  font-weight: bold !important;
+  fill: #000 !important;
+}
+
+.c3-bar {
+  stroke: #333 !important;     /* 邊框顏色 */
+  stroke-width: 0.5px !important; /* 邊框粗細 */
+}

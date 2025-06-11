@@ -13,6 +13,8 @@ function Header() {
         return 'Tutorial';
       case '/download':
         return 'Download';
+      case '/contact':
+        return 'Contact';
       default:
         return '';
     }
@@ -43,24 +45,29 @@ function Header() {
             </button>
             <div className="collapse navbar-collapse justify-content-end" id="navbarNavAltMarkup">
               <ul className="navbar-nav">
-                <li className="nav-item me-8">
-                  <NavLink className="nav-link h4 mb-0" aria-current="page" to="/">
+                <li className="nav-item mt-2 me-6">
+                  <NavLink className="nav-link nav-text mb-0" aria-current="page" to="/">
                     Web Server
                   </NavLink>
                 </li>
-                <li className="nav-item me-8">
-                  <NavLink className="nav-link h4 mb-0" to="/introduction">
+                <li className="nav-item mt-2 me-6">
+                  <NavLink className="nav-link nav-text mb-0" to="/introduction">
                     Introduction
                   </NavLink>
                 </li>
-                <li className="nav-item me-8">
-                  <NavLink className="nav-link h4 mb-0" to="/tutorial">
+                <li className="nav-item mt-2 me-6">
+                  <NavLink className="nav-link nav-text mb-0" to="/tutorial">
                     Tutorial
                   </NavLink>
                 </li>
-                <li className="nav-item me-8">
-                  <NavLink className="nav-link h4 mb-0" to="/download">
+                <li className="nav-item mt-2 me-6">
+                  <NavLink className="nav-link nav-text mb-0" to="/download">
                     Download
+                  </NavLink>
+                </li>
+                <li className="nav-item mt-2 me-6">
+                  <NavLink className="nav-link nav-text mb-0" to="/contact">
+                    Contact
                   </NavLink>
                 </li>
               </ul>
@@ -68,7 +75,7 @@ function Header() {
           </div>
         </nav>
         <div className="py-2 border-bottom d-flex align-items-center text-success fs-5">
-          <i className="bi bi-house me-2"></i>
+          <i className="bi bi-house mt-2 mb-2 me-2"></i>
           <span>/</span>
           <span className="ms-2">{pageName}</span>
         </div>
