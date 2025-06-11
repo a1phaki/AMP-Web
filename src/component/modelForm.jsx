@@ -95,9 +95,11 @@ function ModelForm() {
       .then((res) => res.text())
       .then((text) => {
         setValue('fastaData', text);
+        setValue('target', 'E. coli');
         setSelectedOption('E. coli');
         setTarget('E. coli');
         setProjectName('Test');
+        setValue('projectName', 'Test');
       })
       .catch((err) => {
         console.error('錯誤:', err);
