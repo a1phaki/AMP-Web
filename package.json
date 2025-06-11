@@ -25,9 +25,12 @@
     "c3": "^0.7.20",
     "d3": "^7.9.0",
     "gh-pages": "^6.3.0",
+    "plotly.js": "^3.0.1",
+    "plotly.js-dist-min": "^3.0.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-hook-form": "^7.54.2",
+    "react-plotly.js": "^2.6.0",
     "react-router-dom": "^7.1.5",
     "sass-loader": "^16.0.4"
   },
