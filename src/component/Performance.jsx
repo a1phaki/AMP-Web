@@ -142,32 +142,32 @@ export default function Performance() {
         <h4 className="text-primary my-3">
           Results - Comparison of Traditional ML and ANIA
         </h4>
-        <div className="bg-white py-4">
+        <div className="bg-white py-3">
           <div className="table-container">
             <table className="custom-table-secondary table-hover table table-striped">
               <thead className="text-center">
                 <tr>
-                  <th scope="col" width="20%" className="pe-0 fw-bold fs-4">
+                  <th scope="col" width="15%" className="pe-0 fw-bold fs-5">
                     Bacteria
                     <span className="float-end text-success fw-lighter opacity-25">|</span>
                   </th>
-                  <th scope="col" width="20%" className="pe-0 fw-bold fs-4">
+                  <th scope="col" width="20%" className="pe-0 fw-bold fs-5">
                     Model
                     <span className="float-end text-success fw-lighter opacity-25">|</span>
                   </th>
-                  <th scope="col" width="10%" className="pe-0 fw-bold fs-4">
+                  <th scope="col" width="10%" className="pe-0 fw-bold fs-5">
                     MAE
                     <span className="float-end text-success fw-lighter opacity-25">|</span>
                   </th>
-                  <th scope="col" width="10%" className="pe-0 fw-bold fs-4">
+                  <th scope="col" width="10%" className="pe-0 fw-bold fs-5">
                     MSE
                     <span className="float-end text-success fw-lighter opacity-25">|</span>
                   </th>
-                  <th scope="col" width="10%" className="pe-0 fw-bold fs-4">
+                  <th scope="col" width="10%" className="pe-0 fw-bold fs-5">
                     R²
                     <span className="float-end text-success fw-lighter opacity-25">|</span>
                   </th>
-                  <th scope="col" width="10%" className="pe-0 fw-bold fs-4">
+                  <th scope="col" width="10%" className="pe-0 fw-bold fs-5">
                     PCC
                   </th>
                 </tr>
@@ -232,7 +232,7 @@ export default function Performance() {
                       }}
                     >
                         {rowIdx === 0 && (
-                          <td rowSpan={section.rows.length} className="fst-italic fs-4 fw-bold" style={bgColor}>
+                          <td rowSpan={section.rows.length} className="fst-italic fs-5 fw-bold" style={bgColor}>
                             {section.bacteria}
                           </td>
                         )}
@@ -252,32 +252,32 @@ export default function Performance() {
         <h3 className="text-primary my-3">
           Results -  Comparison with Existing Tools
         </h3>
-        <div className="bg-white py-4">
+        <div className="bg-white py-3">
           <div className="table-container">
             <table className="custom-table-secondary table-hover table table-striped ">
               <thead className="text-center">
                 <tr>
-                  <th scope="col" width="20%" className="pe-0 fw-bold fs-4">
+                  <th scope="col" width="20%" className="pe-0 fw-bold fs-5">
                     Bacteria
                     <span className=" float-end text-success fw-lighter opacity-25 ">|</span>
                   </th>
-                  <th scope="col" width="20%" className="pe-0 fw-bold fs-4">
+                  <th scope="col" width="20%" className="pe-0 fw-bold fs-5">
                     Model
                     <span className=" float-end text-success fw-lighter opacity-25 ">|</span>
                   </th>
-                  <th scope="col" width="10%" className="pe-0 fw-bold fs-4">
+                  <th scope="col" width="10%" className="pe-0 fw-bold fs-5">
                     MAE
                     <span className=" float-end text-success fw-lighter opacity-25 ">|</span>
                   </th>
-                  <th scope="col" width="10%" className="pe-0 fw-bold fs-4">
+                  <th scope="col" width="10%" className="pe-0 fw-bold fs-5">
                     MSE
                     <span className=" float-end text-success fw-lighter opacity-25 ">|</span>
                   </th>
-                  <th scope="col" width="10%" className="pe-0 fw-bold fs-4">
+                  <th scope="col" width="10%" className="pe-0 fw-bold fs-5">
                     R²
                     <span className=" float-end text-success fw-lighter opacity-25 ">|</span>
                   </th>
-                  <th scope="col" width="10%" className="pe-0 fw-bold fs-4">
+                  <th scope="col" width="10%" className="pe-0 fw-bold fs-5">
                     PCC
                   </th>
                 </tr>
@@ -328,7 +328,7 @@ export default function Performance() {
                       {rowIdx === 0 && (
                         <td
                           rowSpan={section.rows.length}
-                          className="align-middle fst-italic fs-4 fw-bold"
+                          className="align-middle fst-italic fs-5 fw-bold"
                           style={{
                             backgroundColor: idx % 2 === 0 ? '#f8f9fa' : '#ffffff',
                           }}
