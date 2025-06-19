@@ -1,5 +1,4 @@
 import AboutANIA from '../component/AboutANIA';
-import Workflow from '../component/WorkFlow';
 import SystemArchitecture from '../component/SystemArchitecture';
 import Performance from '../component/Performance';
 import WelcomeBanner from '../component/WelcomeBanner';
