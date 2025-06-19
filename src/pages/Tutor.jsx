@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useForm } from 'react-hook-form';
 import { faArrowPointer } from '@fortawesome/free-solid-svg-icons';
+import WelcomeBanner from '../component/WelcomeBanner';
 
 export default function Tutor() {
   const { register } = useForm();
@@ -16,10 +17,11 @@ export default function Tutor() {
   const ModalOption = ['E. coli', 'S. aureus', 'P. aerugionsa'];
   return (
     <>
+      <WelcomeBanner />
       <div className="container py-5 ">
-        <div className="row mx-1 border border-3 border-secondary rounded-4">
-          <div className="pt-3  pb-2 custom-border-top bg-secondary">
-            <h2 className="ps-5 h5 fw-medium">User Guide</h2>
+        <div className="border border-3 border-secondary rounded-4 shadow-sm">
+          <div className="pt-3 pb-2 px-3 bg-secondary rounded-top-3">
+            <h2 className="ps-4 h4 fw-medium">User Guide</h2>
           </div>
           <div className="px-5 py-4 bg-white custom-border-bottom">
             <div className="row d-flex align-items-stretch">
@@ -112,6 +114,34 @@ export default function Tutor() {
                   </div>
                 </div>
               </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className="container pb-5">
+        <div className="border border-3 border-secondary rounded-4 shadow-sm">
+          <div className="pt-3 pb-2 px-3 bg-secondary rounded-top-3">
+            <h2 className="ps-4 h4 fw-medium">Input FASTA Format</h2>
+          </div>
+          <div className="px-5 py-4 bg-white custom-border-bottom">
+            <p
+              className="mb-3 lh-lg"
+              style={{ fontSize: '1.3rem', lineHeight: '1.8', textAlign: 'justify' }}
+            >
+              The FASTA format is a text-based format for representing nucleotide or peptide sequences.
+              Each entry begins with a <code>&gt;</code> symbol followed by a sequence identifier,
+              and the actual amino acid sequence is listed in the lines that follow.
+            </p>
+            <h5 className="pt-0 pb-2">Example:</h5>
+            <div className="custom-border bg-light px-3 py-3 rounded-2">
+              <pre className="mb-0" style={{ fontFamily: 'monospace', fontSize: '16px' }}>
+      {`>DBAASP_5613
+AAAAAAAAAAGIGKFLHSAKKFGKAFVGEIMNS
+>DBAASP_11942
+AAAARRRR
+>DBAASP_13251
+AAARLRLLLYLITRR`}
+              </pre>
             </div>
           </div>
         </div>
