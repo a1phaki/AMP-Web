@@ -5,6 +5,7 @@ import Tutor from './pages/Tutor';
 import Download from './pages/Download';
 import Footer from './component/footer';
 import ResultPage from './pages/Result';
+import Contact from './pages/Contact';
 
 import { Routes, Route } from 'react-router-dom';
 
@@ -18,6 +19,7 @@ function App() {
           <Route path="/introduction" element={<Intro />}></Route>
           <Route path="/tutorial" element={<Tutor />}></Route>
           <Route path="/download" element={<Download />}></Route>
+          <Route path="/contact" element={<Contact />} />
           <Route path="/:id" element={<ResultPage />} />
         </Routes>
       </div>
