@@ -193,9 +193,9 @@ function ModelForm() {
     <>
       {isLoading && <Loading />}
       <div className="py-5">
-        <div className="border d-block border-secondary rounded-4 border-3">
-          <div className="pt-3 pb-2 custom-border-top bg-secondary">
-            <h2 className=" ps-3 fs-bold h4">USE ANIA</h2>
+        <div className="border border-3 border-secondary rounded-4 shadow-sm">
+          <div className="pt-3 pb-2 px-3 bg-secondary rounded-top-3">
+            <h2 className="ps-4 h4 fw-medium">USE ANIA</h2>
           </div>
           <div className="bg-white px-4 pt-1 pb-3 custom-border-bottom">
             <form onSubmit={handleSubmit(handleFormSubmit)}>
