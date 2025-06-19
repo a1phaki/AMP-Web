@@ -16,6 +16,10 @@ function Header() {
       case '/contact':
         return 'Contact';
       default:
+        // 判斷是否為 Result 頁面（例如 "/abc123xyz"）
+        if (/^\/[a-z0-9]{10}$/i.test(pathname)) {
+          return 'Result';
+        }
         return '';
     }
   };
