@@ -1,26 +1,35 @@
 export default function AboutANIA() {
   return (
-    <div className="border border-3 border-secondary rounded-4">
-      <div className="pt-3  pb-2 custom-border-top bg-secondary">
-        <h2 className="ps-5 h5 fw-medium">About ANIA</h2>
+    <div className="border border-3 border-secondary rounded-4 shadow-sm">
+      <div className="pt-3 pb-2 px-3 bg-secondary rounded-top-3">
+        <h2 className="ps-4 h4 fw-medium">About ANIA</h2>
       </div>
-      <div className="px-5 py-4 bg-white custom-border-bottom flex-grow-1">
-        <h5 className="fw-normal">
-          In this study, we proposed ANIA, a deep learning framework designed to predict the minimum
-          inhibitory concentration (MIC) values of antimicrobial peptides (AMPs) against three
-          clinically relevant bacterial species: Staphylococcus aureus, Escherichia coli, and
-          Pseudomonas aeruginosa. To effectively model the spatial and contextual patterns embedded
-          within peptide sequences, ANIA integrates a hybrid deep neural architecture comprising
-          stacked Inception modules and Transformer encoders, enabling simultaneous extraction of
-          local motifs and global sequence dependencies. Incorporating Frequency Chaos Game
-          Representation (FCGR) as a spatial encoding strategy, the model transforms peptide
-          sequences into structured image-like representations that preserve k-mer distribution and
-          positional context. This design allows ANIA to leverage the strengths of convolutional and
-          attention-based learning in modeling antimicrobial activity. To enhance interpretability,
-          ANIA includes multiple analytical modules—such as Grad-CAM visualizations, correlation
-          mapping, motif frequency enrichment, and hydrophobicity profiling—allowing users to
-          identify salient regions and physicochemical properties associated with low MIC values.
-        </h5>
+      <div className="px-5 py-4 bg-white rounded-bottom-3 fs-6">
+        <p className="mb-3 lh-lg">
+          In this study, we proposed <span className="text-primary fw-semibold">ANIA</span>, a deep learning framework designed to predict the 
+          <span className="text-primary fw-semibold"> minimum inhibitory concentration (MIC)</span> values of antimicrobial peptides (AMPs) against three 
+          clinically relevant bacterial species: <em>Staphylococcus aureus</em>, <em>Escherichia coli</em>, and <em>Pseudomonas aeruginosa</em>.
+        </p>
+        <p className="mb-3 lh-lg">
+          To effectively model the spatial and contextual patterns embedded within peptide sequences, 
+          ANIA integrates a hybrid neural architecture comprising stacked 
+          <span className="text-primary fw-semibold"> Inception modules</span> and 
+          <span className="text-primary fw-semibold"> Transformer encoders</span>, enabling simultaneous extraction of 
+          local motifs and global dependencies.
+        </p>
+        <p className="mb-3 lh-lg">
+          Incorporating <span className="text-primary fw-semibold">Frequency Chaos Game Representation (FCGR)</span> as a spatial encoding strategy, 
+          the model transforms sequences into image-like matrices preserving <span className="text-primary fw-semibold">k-mer distribution</span> and 
+          positional context.
+        </p>
+        <p className="mb-0 lh-lg">
+          To enhance interpretability, ANIA includes multiple analytical modules—such as 
+          <span className="text-primary fw-semibold"> Grad-CAM</span> visualizations, 
+          <span className="text-primary fw-semibold"> correlation mapping</span>, 
+          <span className="text-primary fw-semibold"> motif enrichment</span>, and 
+          <span className="text-primary fw-semibold"> hydrophobicity profiling</span>—helping users identify salient regions and 
+          physicochemical properties associated with <span className="fw-semibold text-primary">low MIC values</span>.
+        </p>
       </div>
     </div>
   );
