@@ -22,6 +22,7 @@ function ModelForm() {
   const [, setFileContent] = useState(''); // 用於存儲檔案內容
   const [, setApiResponse] = useState(null); // 儲存 API 回應結果
   const navigate = useNavigate();
+  const [progress, setProgress] = useState(0);
 
   // FastAPI 伺服器地址
   const API_URL = 'http://140.113.120.176:5000/api/upload-fasta';
@@ -29,7 +30,6 @@ function ModelForm() {
   // 處理檔案上傳
   const handleFileChange = (event) => {
     const file = event.target.files[0]; // 取得上傳的檔案
-
     if (file) {
       console.log('File Name:', file.name);
       console.log('File Size:', file.size, 'bytes');
@@ -164,6 +164,18 @@ function ModelForm() {
     // 確保 UI 更新
     setTarget(data.target);
     setIsLoading(true); // 開始載入狀態
+    setProgress(0);     // 初始化進度
+
+    let simulatedProgress = 0;
+    const progressTimer = setInterval(() => {
+      simulatedProgress += Math.random() * 1.5 + 0.5; // 每次隨機增加 0.5~2%
+      if (simulatedProgress < 90) {
+        setProgress(Math.floor(simulatedProgress));
+      } else {
+        clearInterval(progressTimer); // 超過 90 停止模擬
+      }
+    }, 500); // 每 0.5 秒更新一次
+
     try {
       // 發送 POST 請求到遠端伺服器
       const response = await axios.post(API_URL, requestBody, {
@@ -172,7 +184,7 @@ function ModelForm() {
 
       console.log('成功送出 FASTA 檔案：', response.data);
       setApiResponse(response.data.message);
-      // 確保 UI 更新
+
       const PredictedData = response.data.result.map((item) => ({
         id: item.ID,
         sequence: item.Sequence,
@@ -180,18 +192,31 @@ function ModelForm() {
         target: item.Target,
         predictedLogMIC: item['Predicted Log MIC'],
       }));
-      navigate(`/${fastaId}`, { state: { fastaId, PredictedData, projectName } });
+
+      // 設定進度為 100%
+      setProgress(100);
+      clearInterval(progressTimer);
+
+      setTimeout(() => {
+        navigate(`/${fastaId}`, {
+          state: { fastaId, PredictedData, projectName },
+        });
+      }, 1000); // 延遲 1 秒過渡
     } catch (error) {
       console.error('發送 FASTA 檔案失敗：', error);
       setApiResponse('上傳失敗，請重試！');
+      clearInterval(progressTimer);  // 確保錯誤時也清除 interval
     } finally {
-      setIsLoading(false); // 停止載入狀態
+      setTimeout(() => {
+        setIsLoading(false);         // 延遲隱藏載入動畫避免閃爍
+        setProgress(0);              // 重設進度條
+      }, 500);
     }
   };
 
   return (
     <>
-      {isLoading && <Loading />}
+      {isLoading && <Loading progress={progress} />}
       <div className="py-5">
         <div className="border border-3 border-secondary rounded-4 shadow-sm">
           <div className="pt-3 pb-2 px-3 bg-secondary rounded-top-3">

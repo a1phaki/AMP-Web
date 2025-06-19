@@ -5,6 +5,7 @@ import c3 from 'c3';
 import 'c3/c3.css';
 import TopPeptidesViewer from '../component/TopPeptidesViewer';
 import WelcomeBanner from '../component/WelcomeBanner';
+import HoverIconButton from '../component/HoverIconButton';
 
 function ResultPage() {
   const location = useLocation();
@@ -185,9 +186,9 @@ function ResultPage() {
       <WelcomeBanner />
       <div className="container py-5">
         {/* Summary 區塊 */}
-        <div className="border border-3 border-secondary rounded-4 mb-4">
-          <div className="pt-3 pb-2 custom-border-top bg-secondary">
-            <h2 className="ps-3 fs-bold h4">Prediction Summary</h2>
+        <div className="border border-3 border-secondary rounded-4 shadow-sm mb-4">
+          <div className="pt-3 pb-2 px-3 bg-secondary rounded-top-3">
+            <h2 className="ps-4 h4 fs-bold">Prediction Summary</h2>
           </div>
           <div className="bg-white pt-4 px-4 pb-1 mb-2">
             <div className="row">
@@ -224,29 +225,39 @@ function ResultPage() {
         </div>
 
         {/* 結果表格區塊 */}
-        <div className="border border-2 border-secondary rounded-4">
-          <div className="pt-3 pb-2 custom-border-top bg-secondary">
-            <h2 className="ps-3 fs-bold h4">Result Table</h2>
+        <div className="border border-3 border-secondary rounded-4 shadow-sm">
+          <div className="pt-3 pb-2 px-3 bg-secondary rounded-top-3">
+            <h2 className="ps-4 h4 fs-bold">USE ANIA</h2>
           </div>
           <div className="bg-white p-4 custom-table">
-            <table className="table-secondary table table-striped">
-              <thead>
+            <table className="custom-table-secondary table-hover table table-striped">
+              <thead className="text-center">
                 <tr>
-                  <th width="10%">ID</th>
-                  <th width="50%">Sequence</th>
-                  <th width="10%" className="text-center">Target</th>
-                  <th width="10%" className="text-center">Length</th>
-                  <th width="20%" className="text-center">Activity (unit: uM)</th>
+                  <th scope="col" width="13%" className="pe-0 fw-bold fs-5">
+                    ID<span className="float-end text-success fw-lighter opacity-25">|</span>
+                  </th>
+                  <th scope="col" width="50%" className="pe-0 fw-bold fs-5">
+                    Sequence<span className="float-end text-success fw-lighter opacity-25">|</span>
+                  </th>
+                  <th scope="col" width="10%" className="pe-0 fw-bold fs-5">
+                    Target<span className="float-end text-success fw-lighter opacity-25">|</span>
+                  </th>
+                  <th scope="col" width="10%" className="pe-0 fw-bold fs-5">
+                    Length<span className="float-end text-success fw-lighter opacity-25">|</span>
+                  </th>
+                  <th scope="col" width="17%" className="pe-0 fw-bold fs-5">
+                    Activity (unit: uM)
+                  </th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody className="text-center align-middle">
                 {tableData.map((data, index) => (
                   <tr key={index}>
                     <td>{data.id}</td>
-                    <td>{data.sequence}</td>
-                    <td className="text-center">{data.target}</td>
-                    <td className="text-center">{data.sequenceLength}</td>
-                    <td className="text-center">{data.predictedLogMIC}</td>
+                    <td className="text-break" style={{ fontFamily: 'monospace' }}>{data.sequence}</td>
+                    <td><em>{data.target}</em></td>
+                    <td>{data.sequenceLength}</td>
+                    <td>{data.predictedLogMIC}</td>
                   </tr>
                 ))}
               </tbody>
@@ -254,13 +265,31 @@ function ResultPage() {
           </div>
 
           {/* 匯出按鈕 */}
-          <div className="mt-4 p-2 d-flex justify-content-end custom-border-bottom" style={{ backgroundColor: '#F9FAFB' }}>
-            <button type="button" className="btn btn-primary btn-lg text-white me-3" onClick={handleExportJSON}>
-              Export .json
-            </button>
-            <button type="button" className="btn btn-primary btn-lg text-white me-3" onClick={handleExport}>
-              Export .csv
-            </button>
+          <div className="mt-4 pe-4 p-2 d-flex justify-content-end custom-border-bottom" style={{ backgroundColor: '#F9FAFB' }}>
+            <HoverIconButton
+              label="Export .json"
+              defaultIcon="/img/file_white.png"
+              hoverIcon="/img/file_white.png"
+              className="btn btn-primary btn-lg text-white me-3"
+              onClick={handleExportJSON}
+              iconStyle={{
+                marginLeft: '-5px',
+                marginRight: '2px',
+                transform: 'translateY(-1.5px)',
+              }}
+            />
+            <HoverIconButton
+              label="Export .csv"
+              defaultIcon="/img/file_white.png"
+              hoverIcon="/img/file_white.png"
+              className="btn btn-primary btn-lg text-white"
+              onClick={handleExport}
+              iconStyle={{
+                marginLeft: '-2px',
+                marginRight: '8px',
+                transform: 'translateY(-2.0px)',
+              }}
+            />
           </div>
         </div>
       </div>
