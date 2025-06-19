@@ -45,3 +45,6 @@ target/
 
 # Ignore VSCode personal settings
 .vscode/
+
+# Ignore large dataset files
+public/downloads/
