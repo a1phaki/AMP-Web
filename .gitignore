@@ -48,3 +48,6 @@ target/
 
 # Ignore large dataset files
 public/downloads/
+
+# Ignore compiled frontend build folder
+dist/

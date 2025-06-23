@@ -25,7 +25,7 @@ function ModelForm() {
   const [progress, setProgress] = useState(0);
 
   // FastAPI 伺服器地址
-  const API_URL = 'http://140.113.120.176:5000/api/upload-fasta';
+  const API_URL = "https://biomics.lab.nycu.edu.tw/api/upload-fasta";
 
   // 處理檔案上傳
   const handleFileChange = (event) => {
@@ -116,7 +116,7 @@ function ModelForm() {
   };
 
   const testDataInput = () => {
-    fetch('/downloads/EC/test.fasta')
+    fetch('downloads/EC/test.fasta')
       .then((res) => res.text())
       .then((text) => {
         setValue('fastaData', text);
@@ -203,7 +203,13 @@ function ModelForm() {
         });
       }, 1000); // 延遲 1 秒過渡
     } catch (error) {
-      console.error('發送 FASTA 檔案失敗：', error);
+      if (error.response) {
+        console.error('API 錯誤狀態碼：', error.response.status);
+        console.error('錯誤訊息內容：', error.response.data);
+        setApiResponse(error.response.data?.detail || '上傳失敗，請確認格式是否正確。');
+      } else {
+        setApiResponse('後端連線失敗，請稍後重試。');
+      }
       setApiResponse('上傳失敗，請重試！');
       clearInterval(progressTimer);  // 確保錯誤時也清除 interval
     } finally {
@@ -356,8 +362,8 @@ AAARLRLLLYLITRR`}
                 <div className="col p-3 d-flex justify-content-end">
                   <HoverIconButton
                     label="Example"
-                    defaultIcon="/img/file_pink.png"
-                    hoverIcon="/img/file_white.png"
+                    defaultIcon="img/file_pink.png"
+                    hoverIcon="img/file_white.png"
                     onClick={testDataInput}
                     className="btn btn-outline-primary btn-lg me-3"
                     iconStyle={{
@@ -368,8 +374,8 @@ AAARLRLLLYLITRR`}
                   />
                   <HoverIconButton
                     label="Clear"
-                    defaultIcon="/img/clear_pink.png"
-                    hoverIcon="/img/clear_white.png"
+                    defaultIcon="img/clear_pink.png"
+                    hoverIcon="img/clear_white.png"
                     onClick={clearFields}
                     className="btn btn-outline-primary btn-lg me-3"
                     iconStyle={{
@@ -380,8 +386,8 @@ AAARLRLLLYLITRR`}
                   />
                   <HoverIconButton
                     label="Start ANIA"
-                    defaultIcon="/img/upload.png"
-                    hoverIcon="/img/upload.png"
+                    defaultIcon="img/upload.png"
+                    hoverIcon="img/upload.png"
                     onClick={handleSubmit(handleFormSubmit)}
                     className="btn btn-primary btn-lg text-white"
                     iconStyle={{

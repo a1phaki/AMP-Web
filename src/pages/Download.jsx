@@ -6,39 +6,41 @@ export default function Download() {
       bacteria: 'E. coli',
       folder: 'EC',
       rows: [
-        ['Train', 'CSV', <>Training set (CSV) for <em>E. coli</em> MIC prediction.</>, 'EC_train', 'EC_csv'],
-        ['Train', 'FASTA', <>Training sequences (FASTA) for <em>E. coli</em>.</>, 'EC_train', 'EC_fasta'],
-        ['Test', 'CSV', <>Testing set (CSV) for evaluating <em>E. coli</em> model.</>, 'EC_test', 'EC_csv'],
-        ['Test', 'FASTA', <>Testing sequences (FASTA) for <em>E. coli</em>.</>, 'EC_test', 'EC_fasta'],
+        ['Train', 'CSV', <>Training set (CSV) for <em>E. coli</em> MIC prediction.</>, 'EC/EC_train.csv'],
+        ['Train', 'FASTA', <>Training sequences (FASTA) for <em>E. coli</em>.</>, 'EC/EC_train.fasta'],
+        ['Test', 'CSV', <>Testing set (CSV) for evaluating <em>E. coli</em> model.</>, 'EC/EC_test.csv'],
+        ['Test', 'FASTA', <>Testing sequences (FASTA) for <em>E. coli</em>.</>, 'EC/EC_test.fasta'],
       ],
     },
     {
       bacteria: 'S. aureus',
       folder: 'SA',
       rows: [
-        ['Train', 'CSV', <>Training set (CSV) for <em>S. aureus</em> MIC prediction.</>, 'SA_train', 'SA_csv'],
-        ['Train', 'FASTA', <>Training sequences (FASTA) for <em>S. aureus</em>.</>, 'SA_train', 'SA_fasta'],
-        ['Test', 'CSV', <>Testing set (CSV) for evaluating <em>S. aureus</em> model.</>, 'SA_test', 'SA_csv'],
-        ['Test', 'FASTA', <>Testing sequences (FASTA) for <em>S. aureus</em>.</>, 'SA_test', 'SA_fasta'],
+        ['Train', 'CSV', <>Training set (CSV) for <em>S. aureus</em> MIC prediction.</>, 'SA/SA_train.csv'],
+        ['Train', 'FASTA', <>Training sequences (FASTA) for <em>S. aureus</em>.</>, 'SA/SA_train.fasta'],
+        ['Test', 'CSV', <>Testing set (CSV) for evaluating <em>S. aureus</em> model.</>, 'SA/SA_test.csv'],
+        ['Test', 'FASTA', <>Testing sequences (FASTA) for <em>S. aureus</em>.</>, 'SA/SA_test.fasta'],
       ],
     },
     {
       bacteria: 'P. aeruginosa',
       folder: 'PA',
       rows: [
-        ['Train', 'CSV', <>Training set (CSV) for <em>P. aeruginosa</em> MIC prediction.</>, 'PA_train', 'PA_csv'],
-        ['Train', 'FASTA', <>Training sequences (FASTA) for <em>P. aeruginosa</em>.</>, 'PA_train', 'PA_fasta'],
-        ['Test', 'CSV', <>Testing set (CSV) for evaluating <em>P. aeruginosa</em> model.</>, 'PA_test', 'PA_csv'],
-        ['Test', 'FASTA', <>Testing sequences (FASTA) for <em>P. aeruginosa</em>.</>, 'PA_test', 'PA_fasta'],
+        ['Train', 'CSV', <>Training set (CSV) for <em>P. aeruginosa</em> MIC prediction.</>, 'PA/PA_train.csv'],
+        ['Train', 'FASTA', <>Training sequences (FASTA) for <em>P. aeruginosa</em>.</>, 'PA/PA_train.fasta'],
+        ['Test', 'CSV', <>Testing set (CSV) for evaluating <em>P. aeruginosa</em> model.</>, 'PA/PA_test.csv'],
+        ['Test', 'FASTA', <>Testing sequences (FASTA) for <em>P. aeruginosa</em>.</>, 'PA/PA_test.fasta'],
       ],
     },
   ];
 
-  const handleDownload = (folder, type, extension) => {
-    const filePath = `/downloads/${folder}_${type}.${extension}`;
+  const handleDownload = (filePath) => {
+    const baseUrl = import.meta.env.BASE_URL || './';
+    const fullPath = `${baseUrl}downloads/${filePath}`;
+
     const link = document.createElement('a');
-    link.href = filePath;
-    link.download = `${folder}_${type}.${extension}`;
+    link.href = fullPath;
+    link.download = filePath.split('/').pop(); // 自動取最後檔名
     link.click();
   };
 
@@ -110,7 +112,7 @@ export default function Download() {
                       <td>
                         <button
                           className="btn border-0"
-                          onClick={() => handleDownload(section.folder, row[3], row[4])}
+                          onClick={() => handleDownload(row[3])}
                         >
                           <img
                             src="img/downloads.png"

@@ -1,4 +1,4 @@
-import { Mail, MapPin, Github } from 'lucide-react';
+import { Mail, MapPin, Github, User } from 'lucide-react';
 import WelcomeBanner from '../component/WelcomeBanner';
 
 export default function Contact() {
@@ -23,6 +23,15 @@ export default function Contact() {
                     {/* Contact Info */}
                     <div className="card border-0 shadow-sm rounded-4 bg-light mb-4">
                         <div className="card-body p-4 px-md-5 d-flex flex-column gap-4">
+                            {/* Name */}
+                            <div className="d-flex align-items-center gap-3">
+                                <div className="bg-white p-2 border rounded-circle">
+                                    <User className="text-primary" size={24} />
+                                </div>
+                                <div className="fs-5 fw-medium">
+                                    <strong>Name:</strong> Yen-Peng Chiu
+                                </div>
+                            </div>
                             {/* Email */}
                             <div className="d-flex align-items-center gap-3">
                                 <div className="bg-white p-2 border rounded-circle">
@@ -36,12 +45,21 @@ export default function Contact() {
                                 </div>
                             </div>
                             {/* Institute */}
+                            {/* Institute with Link */}
                             <div className="d-flex align-items-center gap-3">
                                 <div className="bg-white p-2 border rounded-circle">
                                     <MapPin className="text-primary" size={24} />
                                 </div>
                                 <div className="fs-5 fw-medium">
-                                    <strong>Institute:</strong> Institute of Data Science and Engineering, NYCU
+                                    <strong>Institute:</strong> &nbsp;
+                                    <a
+                                    href="https://www.cs.nycu.edu.tw/intro/organization/data"
+                                    target="_blank"
+                                    rel="noreferrer"
+                                    className="text-decoration-none text-primary"
+                                    >
+                                    Institute of Data Science and Engineering, NYCU
+                                    </a>
                                 </div>
                             </div>
                             {/* GitHub */}

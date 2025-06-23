@@ -268,8 +268,8 @@ function ResultPage() {
           <div className="mt-4 pe-4 p-2 d-flex justify-content-end custom-border-bottom" style={{ backgroundColor: '#F9FAFB' }}>
             <HoverIconButton
               label="Export .json"
-              defaultIcon="/img/file_white.png"
-              hoverIcon="/img/file_white.png"
+              defaultIcon="img/file_white.png"
+              hoverIcon="img/file_white.png"
               className="btn btn-primary btn-lg text-white me-3"
               onClick={handleExportJSON}
               iconStyle={{
@@ -280,8 +280,8 @@ function ResultPage() {
             />
             <HoverIconButton
               label="Export .csv"
-              defaultIcon="/img/file_white.png"
-              hoverIcon="/img/file_white.png"
+              defaultIcon="img/file_white.png"
+              hoverIcon="img/file_white.png"
               className="btn btn-primary btn-lg text-white"
               onClick={handleExport}
               iconStyle={{
