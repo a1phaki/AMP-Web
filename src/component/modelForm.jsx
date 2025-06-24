@@ -25,7 +25,7 @@ function ModelForm() {
   const [progress, setProgress] = useState(0);
 
   // FastAPI 伺服器地址
-  const API_URL = "https://biomics.lab.nycu.edu.tw/api/upload-fasta";
+  const API_URL = 'https://biomics.lab.nycu.edu.tw/api/upload-fasta';
 
   // 處理檔案上傳
   const handleFileChange = (event) => {
@@ -164,7 +164,7 @@ function ModelForm() {
     // 確保 UI 更新
     setTarget(data.target);
     setIsLoading(true); // 開始載入狀態
-    setProgress(0);     // 初始化進度
+    setProgress(0); // 初始化進度
 
     let simulatedProgress = 0;
     const progressTimer = setInterval(() => {
@@ -211,11 +211,11 @@ function ModelForm() {
         setApiResponse('後端連線失敗，請稍後重試。');
       }
       setApiResponse('上傳失敗，請重試！');
-      clearInterval(progressTimer);  // 確保錯誤時也清除 interval
+      clearInterval(progressTimer); // 確保錯誤時也清除 interval
     } finally {
       setTimeout(() => {
-        setIsLoading(false);         // 延遲隱藏載入動畫避免閃爍
-        setProgress(0);              // 重設進度條
+        setIsLoading(false); // 延遲隱藏載入動畫避免閃爍
+        setProgress(0); // 重設進度條
       }, 500);
     }
   };

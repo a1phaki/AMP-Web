@@ -9,10 +9,10 @@ export default function Intro() {
       <WelcomeBanner />
       <div className="container py-5">
         <div className="row mx-1 d-flex align-items-stretch">
-          <div className="col-6 d-flex flex-column">
+          <div className="col-xl-6 col-12 d-flex flex-column">
             <AboutANIA />
           </div>
-          <div className="col-6 d-flex flex-column">
+          <div className="col-xl-6 col-12 d-flex flex-column">
             <SystemArchitecture />
           </div>
         </div>

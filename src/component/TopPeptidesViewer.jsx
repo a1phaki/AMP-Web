@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import PropTypes from 'prop-types';
 
 function TopPeptidesViewer({ topPeptides }) {
   const [selectedIndex, setSelectedIndex] = useState(0);
@@ -7,7 +8,7 @@ function TopPeptidesViewer({ topPeptides }) {
   return (
     <div className="mt-3">
       <div className="border rounded bg-light" style={{ fontSize: '1.0rem' }}>
-        <div 
+        <div
           className="border-bottom px-3 py-2 d-flex align-items-center justify-content-between text-white rounded-top"
           style={{ backgroundColor: '#fcc2b8' }}
         >
@@ -58,5 +59,15 @@ function TopPeptidesViewer({ topPeptides }) {
     </div>
   );
 }
+TopPeptidesViewer.propTypes = {
+  topPeptides: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+      sequence: PropTypes.string.isRequired,
+      sequenceLength: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+      predictedLogMIC: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+    }),
+  ).isRequired,
+};
 
 export default TopPeptidesViewer;

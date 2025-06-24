@@ -24,8 +24,8 @@ export default function Tutor() {
             <h2 className="ps-4 h4 fw-medium">User Guide</h2>
           </div>
           <div className="px-5 py-4 bg-white custom-border-bottom">
-            <div className="row d-flex align-items-stretch">
-              <div className="col-6 d-flex flex-column mb-7">
+            <div className="row d-flex align-items-stretch g-4">
+              <div className="col-12 col-lg-6  d-flex flex-column">
                 <div className="p-4 bg-info custom-border flex-grow-1">
                   <h4 className="text-primary">1. Protein Sequence</h4>
                   <p>
@@ -49,7 +49,7 @@ export default function Tutor() {
                   </div>
                 </div>
               </div>
-              <div className="col-6 d-flex flex-column mb-7">
+              <div className="col-12 col-lg-6 d-flex flex-column">
                 <div className="p-4 bg-light custom-border flex-grow-1">
                   <h4 className="text-primary">2. Functional Activity</h4>
                   <p>
@@ -84,7 +84,7 @@ export default function Tutor() {
                   </div>
                 </div>
               </div>
-              <div className="col-6 d-flex flex-column">
+              <div className="col-12 col-lg-6 d-flex flex-column">
                 <div className="p-4 bg-light custom-border flex-grow-1">
                   <h4 className="text-primary">3. Project&apos;s name</h4>
                   <p>Finally, we allow users to input the project&apos;s name.</p>
@@ -96,7 +96,7 @@ export default function Tutor() {
                   </div>
                 </div>
               </div>
-              <div className="col-6 d-flex flex-column">
+              <div className="col-12 col-lg-6 d-flex flex-column">
                 <div className="p-4 bg-info custom-border flex-grow-1">
                   <h4 className="text-primary">4. Start ANIA</h4>
                   <p>
@@ -128,14 +128,14 @@ export default function Tutor() {
               className="mb-3 lh-lg"
               style={{ fontSize: '1.3rem', lineHeight: '1.8', textAlign: 'justify' }}
             >
-              The FASTA format is a text-based format for representing nucleotide or peptide sequences.
-              Each entry begins with a <code>&gt;</code> symbol followed by a sequence identifier,
-              and the actual amino acid sequence is listed in the lines that follow.
+              The FASTA format is a text-based format for representing nucleotide or peptide
+              sequences. Each entry begins with a <code>&gt;</code> symbol followed by a sequence
+              identifier, and the actual amino acid sequence is listed in the lines that follow.
             </p>
             <h5 className="pt-0 pb-2">Example:</h5>
             <div className="custom-border bg-light px-3 py-3 rounded-2">
               <pre className="mb-0" style={{ fontFamily: 'monospace', fontSize: '16px' }}>
-      {`>DBAASP_5613
+                {`>DBAASP_5613
 AAAAAAAAAAGIGKFLHSAKKFGKAFVGEIMNS
 >DBAASP_11942
 AAAARRRR

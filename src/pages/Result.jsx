@@ -22,10 +22,13 @@ function ResultPage() {
     tableData = location.state.PredictedData;
 
     // 預測資料存入 localStorage（支援頁面重整）
-    localStorage.setItem('lastPredictionResult', JSON.stringify({
-      projectName,
-      PredictedData: tableData
-    }));
+    localStorage.setItem(
+      'lastPredictionResult',
+      JSON.stringify({
+        projectName,
+        PredictedData: tableData,
+      }),
+    );
   } else {
     // 回退：從 localStorage 取得資料
     const saved = localStorage.getItem('lastPredictionResult');
@@ -34,8 +37,8 @@ function ResultPage() {
       projectName = parsed.projectName;
       tableData = parsed.PredictedData;
     } else {
-      alert("Invalid access: Please upload peptide sequences first.");
-      window.location.href = "/";
+      alert('Invalid access: Please upload peptide sequences first.');
+      window.location.href = '/';
     }
   }
 
@@ -98,7 +101,7 @@ function ResultPage() {
       legend: { show: false },
       size: { width: 350, height: 280 },
       padding: { top: 0, right: 0, bottom: 0, left: 50 },
-      tooltip: { show: true }  // 建議加上 tooltip
+      tooltip: { show: true }, // 建議加上 tooltip
     });
 
     // === Plotly: Violin Plot of Predicted Log MIC ===
@@ -129,7 +132,6 @@ function ResultPage() {
     Plotly.newPlot(violinRef.current, [trace], layout, { displayModeBar: false });
   }, [bins, predictedMICs]);
 
-
   // === 匯出資料為 CSV 檔案 ===
   const convertToCSV = (tableData) => {
     const headers = ['ID', 'Sequence', 'Target', 'Sequence Length', 'Predicted Log MIC'];
@@ -144,7 +146,7 @@ function ResultPage() {
   };
 
   const convertToJSON = (tableData) => {
-    return JSON.stringify(tableData, null, 2);  // 格式化為美化 JSON
+    return JSON.stringify(tableData, null, 2); // 格式化為美化 JSON
   };
 
   const handleExport = (e) => {
@@ -175,9 +177,7 @@ function ResultPage() {
 
   // === 設定網頁標題（動態根據 projectName）===
   useEffect(() => {
-    document.title = projectName
-      ? `Prediction Result - ${projectName}`
-      : 'Prediction Result';
+    document.title = projectName ? `Prediction Result - ${projectName}` : 'Prediction Result';
   }, [projectName]);
 
   // === 回傳畫面 UI ===
@@ -193,20 +193,41 @@ function ResultPage() {
           <div className="bg-white pt-4 px-4 pb-1 mb-2">
             <div className="row">
               {/* 統計摘要 */}
-              <div className="col-4">
-                <ul className="list-unstyled border-start ps-3 border-3 border-primary" style={{ fontSize: '1rem' }}>
-                  <li><strong>Project ID: </strong>{projectName}</li>
-                  <li><strong>Target: </strong>{target}</li>
-                  <li><strong>Number of sequences: </strong>{tableData.length}</li>
-                  <li><strong>Sequence Length: </strong>{minLen} ~ {maxLen}</li>
-                  <li><strong>Low MIC count: </strong>{lowCount} (log MIC &lt; 1)</li>
-                  <li><strong>High MIC count: </strong>{highCount} (log MIC &gt; 2)</li>
+              <div className="col-lg-4 col-12">
+                <ul
+                  className="list-unstyled border-start ps-3 border-3 border-primary"
+                  style={{ fontSize: '1rem' }}
+                >
+                  <li>
+                    <strong>Project ID: </strong>
+                    {projectName}
+                  </li>
+                  <li>
+                    <strong>Target: </strong>
+                    {target}
+                  </li>
+                  <li>
+                    <strong>Number of sequences: </strong>
+                    {tableData.length}
+                  </li>
+                  <li>
+                    <strong>Sequence Length: </strong>
+                    {minLen} ~ {maxLen}
+                  </li>
+                  <li>
+                    <strong>Low MIC count: </strong>
+                    {lowCount} (log MIC &lt; 1)
+                  </li>
+                  <li>
+                    <strong>High MIC count: </strong>
+                    {highCount} (log MIC &gt; 2)
+                  </li>
                   <TopPeptidesViewer topPeptides={topPeptides} />
                 </ul>
               </div>
 
               {/* Sequence Length 分佈圖 */}
-              <div className="col-4">
+              <div className="col-lg-4 col-md-6 col-12">
                 <div className="text-center mb-2" style={{ fontSize: '1.2rem' }}>
                   <strong>Sequence Length Distribution</strong>
                 </div>
@@ -214,7 +235,7 @@ function ResultPage() {
               </div>
 
               {/* Violin Plot 圖 */}
-              <div className="col-4">
+              <div className="col-lg-4 col-md-6 col-12">
                 <div className="text-center mb-2 ms-8" style={{ fontSize: '1.2rem' }}>
                   <strong>Predicted Log MIC</strong>
                 </div>
@@ -254,8 +275,12 @@ function ResultPage() {
                 {tableData.map((data, index) => (
                   <tr key={index}>
                     <td>{data.id}</td>
-                    <td className="text-break" style={{ fontFamily: 'monospace' }}>{data.sequence}</td>
-                    <td><em>{data.target}</em></td>
+                    <td className="text-break" style={{ fontFamily: 'monospace' }}>
+                      {data.sequence}
+                    </td>
+                    <td>
+                      <em>{data.target}</em>
+                    </td>
                     <td>{data.sequenceLength}</td>
                     <td>{data.predictedLogMIC}</td>
                   </tr>
@@ -265,7 +290,10 @@ function ResultPage() {
           </div>
 
           {/* 匯出按鈕 */}
-          <div className="mt-4 pe-4 p-2 d-flex justify-content-end custom-border-bottom" style={{ backgroundColor: '#F9FAFB' }}>
+          <div
+            className="mt-4 pe-4 p-2 d-flex justify-content-end custom-border-bottom"
+            style={{ backgroundColor: '#F9FAFB' }}
+          >
             <HoverIconButton
               label="Export .json"
               defaultIcon="img/file_white.png"

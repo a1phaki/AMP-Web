@@ -6,20 +6,20 @@ export default function SystemArchitecture() {
         <h2 className="ps-4 h4 fw-medium">System Architecture</h2>
       </div>
       <div className="px-5 py-4 bg-white rounded-bottom-3">
-        <p 
+        <p
           className="mb-3 lh-lg"
-          style={{ fontSize: '1.0rem', lineHeight: '1.8', textAlign: 'justify' }}  
+          style={{ fontSize: '1.0rem', lineHeight: '1.8', textAlign: 'justify' }}
         >
-          The architecture below illustrates the end-to-end design of the 
-          <span className="fw-semibold text-primary"> ANIA platform</span>, supporting AMP sequence submission, 
-          feature encoding, and MIC prediction via a deep learning model.
+          The architecture below illustrates the end-to-end design of the
+          <span className="fw-semibold text-primary"> ANIA platform</span>, supporting AMP sequence
+          submission, feature encoding, and MIC prediction via a deep learning model.
         </p>
         <div className="mb-3 bg-light bg-white p-3 rounded-3 border">
-            <img
-                src="img/SystemArchitecture.png"
-                className="img-fluid rounded-2 d-block mx-auto"
-                alt="System Architecture Diagram"
-            />
+          <img
+            src="img/SystemArchitecture.png"
+            className="img-fluid rounded-2 d-block mx-auto"
+            alt="System Architecture Diagram"
+          />
         </div>
       </div>
     </div>

@@ -1,3 +1,5 @@
+import PropTypes from 'prop-types';
+
 function Loading({ progress = 0 }) {
   const isFinished = progress >= 100;
   const displayText = isFinished ? 'Prediction complete!' : 'Processing...';
@@ -38,7 +40,7 @@ function Loading({ progress = 0 }) {
             }`}
             style={{
               width: `${progress}%`,
-              fontSize: '1.2rem',       // ⬅️ 這裡調整文字大小
+              fontSize: '1.2rem', // ⬅️ 這裡調整文字大小
               fontWeight: 600,
             }}
             role="progressbar"
@@ -74,5 +76,7 @@ function Loading({ progress = 0 }) {
     </div>
   );
 }
-
+Loading.propTypes = {
+  progress: PropTypes.number,
+};
 export default Loading;
