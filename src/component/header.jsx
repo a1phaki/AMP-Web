@@ -29,7 +29,7 @@ function Header() {
   return (
     <div className="container">
       <div className="sticky-top bg-white">
-        <nav className="navbar navbar-expand-lg navbar-light border-bottom">
+        <nav className="navbar navbar-expand-xl navbar-light border-bottom">
           <div className="container-fluid g-0 d-flex align-items-center">
             <NavLink className="navbar-brand" to="/">
               <h1 className="mb-2">
@@ -47,7 +47,7 @@ function Header() {
             >
               <span className="navbar-toggler-icon"></span>
             </button>
-            <div className="collapse navbar-collapse justify-content-end" id="navbarNavAltMarkup">
+            <div className="collapse navbar-collapse  justify-content-end" id="navbarNavAltMarkup">
               <ul className="navbar-nav">
                 <li className="nav-item mt-2 me-6">
                   <NavLink className="nav-link nav-text mb-0" aria-current="page" to="/">

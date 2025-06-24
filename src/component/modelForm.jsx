@@ -239,8 +239,7 @@ function ModelForm() {
                     field below
                   </h5>
                 </div>
-
-                <div className="col-6">
+                <div className="col-12 col-lg-6">
                   <textarea
                     {...register('fastaData', {
                       onChange: (e) => handleInput(e), // 將行數限制邏輯加入到 onChange
@@ -257,11 +256,11 @@ AAARLRLLLYLITRR`}
                     className="form-control"
                   />
                 </div>
-                <div className="row col-6">
-                  <div className="col-1 d-flex align-items-center">
+                <div className="row col-lg-6 col-12">
+                  <div className="col-lg-1 col-12 d-flex align-items-center justify-content-center">
                     <h4>or</h4>
                   </div>
-                  <div className="col-11">
+                  <div className="col-lg-11 col-12">
                     <div className="custom-file py-5">
                       <h4 className="text-center pb-4">Choose a file or drag & drop</h4>
                       <div className="d-flex justify-content-center ">
@@ -302,13 +301,13 @@ AAARLRLLLYLITRR`}
                   </div>
                 </div>
               </div>
-              <div className="row pb-1 my-2 ">
-                <div className="col-6">
+              <div className="row pb-1 my-2">
+                <div className="col-12 col-lg-6 mb-3">
                   <div className="d-flex">
                     <h4 className="text-primary fw-semibold mb-3 me-3">Step2</h4>
                     <h5 className="text-black fw-normal pt-1">Select type</h5>
                   </div>
-                  <div className="row">
+                  <div className="row g-3">
                     {ModalOption.map((option, index) => (
                       <div className="col-4" key={index}>
                         <div
@@ -338,7 +337,7 @@ AAARLRLLLYLITRR`}
                     ))}
                   </div>
                 </div>
-                <div className="col-6">
+                <div className="col-12 col-lg-6">
                   <div className="d-flex">
                     <h4 className="text-primary fw-semibold mb-3 me-3">Step3</h4>
                     <h5 className="text-black fw-normal pt-1">Input your project name</h5>

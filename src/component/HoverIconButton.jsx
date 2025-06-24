@@ -11,12 +11,7 @@ function HoverIconButton({ label, defaultIcon, hoverIcon, onClick, className, ic
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      <img
-        src={isHovered ? hoverIcon : defaultIcon}
-        alt="icon"
-        width="27"
-        style={iconStyle}
-      />
+      <img src={isHovered ? hoverIcon : defaultIcon} alt="icon" width="27" style={iconStyle} />
       {label}
     </button>
   );
