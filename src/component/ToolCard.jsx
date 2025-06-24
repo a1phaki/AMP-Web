@@ -1,6 +1,6 @@
 function ToolCard() {
   const tool = {
-    icon: '/img/Logo2.png',
+    icon: 'img/Logo2.png',
     borderColor: '#7fc4f6',
     bgColor: '#f38986',
     title: 'ANIA',
