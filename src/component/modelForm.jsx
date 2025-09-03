@@ -364,7 +364,7 @@ AAARLRLLLYLITRR`}
                     defaultIcon="img/file_pink.png"
                     hoverIcon="img/file_white.png"
                     onClick={testDataInput}
-                    className="btn btn-outline-primary btn-lg me-3"
+                    className="btn btn-outline-primary btn-lg me-3 d-flex align-items-center"
                     iconStyle={{
                       marginLeft: '-5px',
                       marginRight: '8px',
@@ -376,7 +376,7 @@ AAARLRLLLYLITRR`}
                     defaultIcon="img/clear_pink.png"
                     hoverIcon="img/clear_white.png"
                     onClick={clearFields}
-                    className="btn btn-outline-primary btn-lg me-3"
+                    className="btn btn-outline-primary btn-lg me-3 "
                     iconStyle={{
                       marginLeft: '-5px',
                       marginRight: '2px',
@@ -388,7 +388,7 @@ AAARLRLLLYLITRR`}
                     defaultIcon="img/upload.png"
                     hoverIcon="img/upload.png"
                     onClick={handleSubmit(handleFormSubmit)}
-                    className="btn btn-primary btn-lg text-white"
+                    className="btn btn-primary btn-lg text-white d-flex align-items-center"
                     iconStyle={{
                       marginLeft: '-2px',
                       marginRight: '8px',

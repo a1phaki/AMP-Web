@@ -9,7 +9,7 @@ function ToolCard() {
   };
 
   return (
-    <div className="rounded-4 mx-0 mt-4 pb-0">
+    <div className="rounded-4 mx-0 mt-4 pb-0 mb-4">
       <div className="bg-white">
         <div className="row align-items-center">
           <div className="col-auto">
@@ -34,10 +34,7 @@ function ToolCard() {
             <h5 className="mt-1 mb-1 fw-bold" style={{ fontSize: '1.8rem' }}>
               {tool.title}
             </h5>
-            <p
-              className="mt-1 mb-4 text-muted"
-              style={{ fontSize: '1.2rem', textAlign: 'justify' }}
-            >
+            <p className="text-muted mb-0" style={{ fontSize: '1.2rem', textAlign: 'justify' }}>
               {tool.description}
             </p>
           </div>
