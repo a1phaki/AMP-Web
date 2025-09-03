@@ -1,6 +1,96 @@
 import { Mail, MapPin, Github, User } from 'lucide-react';
 import WelcomeBanner from '../component/WelcomeBanner';
 
+// 只讓括號內文字可以點擊
+function InstituteItem({ label, url }) {
+  const match = label.match(/^(.*)\(([^()]*)\)(.*)$/); 
+  if (url && match) {
+    const beforeText = match[1].trim(); // 括號前的部分
+    const insideText = match[2].trim(); // 括號內純文字
+    const afterText = match[3].trim();  // 括號後的部分 (通常是空的)
+    return (
+      <>
+        {beforeText} (
+        <a
+          href={url}
+          target="_blank"
+          rel="noreferrer"
+          className="text-decoration-none text-primary"
+          aria-label={`Open ${insideText} website`}
+        >
+          {insideText}
+        </a>
+        ){afterText && ` ${afterText}`}
+      </>
+    );
+  }
+
+  // 如果沒有括號或沒有 URL，直接輸出原文字
+  return <span>{label}</span>;
+}
+
+const contacts = [
+  {
+    name: 'Yen-Peng Chiu',
+    email: 'SilverGojo4@gmail.com',
+    institutes: [
+      {
+        label: 'Institute of Data Science and Engineering (CCS)',
+        url: 'https://www.cs.nycu.edu.tw/?locale=en',
+      },
+      {
+        label: 'National Yang Ming Chiao Tung University (NYCU)',
+        url: 'https://www.nycu.edu.tw/nycu/en/index',
+      },
+    ],
+    github: 'https://github.com/SilverGojo4',
+  },
+  {
+    name: 'Lantian Yao',
+    email: 'lantianyao@link.cuhk.edu.cn',
+    institutes: [
+      { label: 'Kobilka Institute of Innovative Drug Discovery (KIIDD)',
+        url: 'https://lhs.cuhk.edu.cn/en/page/62',
+      },
+      { label: 'School of Science and Engineering (SSE)',
+        url: 'https://sse.cuhk.edu.cn/en',
+      },
+      { label: 'The Chinese University of Hong Kong, Shenzhen (CUHK-Shenzhen)',
+        url: 'https://www.cuhk.edu.cn/en',
+      },
+    ],
+    github: 'https://github.com/lantianyao',
+  },
+  {
+    name: 'Tzong-Yi Lee',
+    email: 'leetzongyi@nycu.edu.tw',
+    institutes: [
+      { label: 'Institute of Bioinformatics and Systems Biology (CBT)',
+        url: 'https://ibsb.nycu.edu.tw/en/#1',
+      },
+      { label: 'Center for Intelligent Drug Systems and Smart Bio-devices (IDS2B)',
+        url: 'https://www.ids2b.com',
+      },
+      {
+        label: 'National Yang Ming Chiao Tung University (NYCU)',
+        url: 'https://www.nycu.edu.tw/nycu/en/index',
+      },
+    ],
+  },
+  {
+    name: 'Ying-Chih Chiang',
+    email: 'chiangyc@cuhk.edu.cn',
+    institutes: [
+      { label: 'Kobilka Institute of Innovative Drug Discovery (KIIDD)',
+        url: 'https://lhs.cuhk.edu.cn/en/page/62',
+      },
+      { label: 'The Chinese University of Hong Kong, Shenzhen (CUHK-Shenzhen)',
+        url: 'https://www.cuhk.edu.cn/en',
+      },
+    ],
+  },
+];
+
 export default function Contact() {
   return (
     <>
@@ -23,70 +113,78 @@ export default function Contact() {
               to collaborate, feel free to reach out to us through the contact information below.
             </p>
 
-            {/* Contact Info */}
-            <div className="card border-0 shadow-sm rounded-4 bg-light mb-4">
-              <div className="card-body p-4 px-md-5 d-flex flex-column gap-4">
-                {/* Name */}
-                <div className="d-flex align-items-center gap-3">
-                  <div className="bg-white p-2 border rounded-circle">
-                    <User className="text-primary" size={24} />
+            {/* Contact Cards */}
+            {contacts.map((contact, idx) => (
+              <div key={idx} className="card border-0 shadow-sm rounded-4 bg-light mb-3">
+                <div className="card-body p-4 px-md-5 d-flex flex-column gap-4">
+                  
+                  {/* Name */}
+                  <div className="d-flex align-items-center gap-3">
+                    <div className="bg-white p-2 border rounded-circle">
+                      <User className="text-primary" size={24} />
+                    </div>
+                    <div className="fs-5 fw-medium">
+                      <strong>Name:</strong> {contact.name}
+                    </div>
                   </div>
-                  <div className="fs-5 fw-medium">
-                    <strong>Name:</strong> Yen-Peng Chiu
+
+                  {/* Email */}
+                  {contact.email && (
+                    <div className="d-flex align-items-center gap-3">
+                      <div className="bg-white p-2 border rounded-circle">
+                        <Mail className="text-primary" size={24} />
+                      </div>
+                      <div className="fs-5 fw-medium">
+                        <strong>Email:</strong>&nbsp;
+                        <a
+                          href={`mailto:${contact.email}`}
+                          className="text-decoration-none text-primary"
+                        >
+                          {contact.email}
+                        </a>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Institutes */}
+                  <div className="d-flex align-items-start gap-3">
+                    <div className="bg-white p-2 border rounded-circle">
+                      <MapPin className="text-primary" size={24} />
+                    </div>
+                    <div className="fs-5 fw-medium">
+                      <strong>Institute:</strong>
+                      <ul className="mb-0 mt-2 list-unstyled d-flex flex-column gap-1">
+                        {contact.institutes.map((inst, i) => (
+                          <li key={i}>
+                            <InstituteItem label={inst.label} url={inst.url} />
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
                   </div>
-                </div>
-                {/* Email */}
-                <div className="d-flex align-items-center gap-3">
-                  <div className="bg-white p-2 border rounded-circle">
-                    <Mail className="text-primary" size={24} />
-                  </div>
-                  <div className="fs-5 fw-medium">
-                    <strong>Email:</strong> &nbsp;
-                    <a
-                      href="mailto:SilverGojo4@gmail.com"
-                      className="text-decoration-none text-primary"
-                    >
-                      SilverGojo4@gmail.com
-                    </a>
-                  </div>
-                </div>
-                {/* Institute */}
-                {/* Institute with Link */}
-                <div className="d-flex align-items-center gap-3">
-                  <div className="bg-white p-2 border rounded-circle">
-                    <MapPin className="text-primary" size={24} />
-                  </div>
-                  <div className="fs-5 fw-medium">
-                    <strong>Institute:</strong> &nbsp;
-                    <a
-                      href="https://www.cs.nycu.edu.tw/intro/organization/data"
-                      target="_blank"
-                      rel="noreferrer"
-                      className="text-decoration-none text-primary"
-                    >
-                      Institute of Data Science and Engineering, NYCU
-                    </a>
-                  </div>
-                </div>
-                {/* GitHub */}
-                <div className="d-flex align-items-center gap-3">
-                  <div className="bg-white p-2 border rounded-circle">
-                    <Github className="text-primary" size={24} />
-                  </div>
-                  <div className="fs-5 fw-medium">
-                    <strong>GitHub:</strong> &nbsp;
-                    <a
-                      href="https://github.com/SilverGojo4/AMP-MIC"
-                      target="_blank"
-                      rel="noreferrer"
-                      className="text-decoration-none text-primary"
-                    >
-                      github.com/SilverGojo4/AMP-MIC
-                    </a>
-                  </div>
+
+                  {/* GitHub */}
+                  {contact.github && (
+                    <div className="d-flex align-items-center gap-3">
+                      <div className="bg-white p-2 border rounded-circle">
+                        <Github className="text-primary" size={24} />
+                      </div>
+                      <div className="fs-5 fw-medium">
+                        <strong>GitHub:</strong>&nbsp;
+                        <a
+                          href={contact.github}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="text-decoration-none text-primary"
+                        >
+                          {contact.github.replace(/^https?:\/\//, '')}
+                        </a>
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
-            </div>
+            ))}
 
             {/* FAQ */}
             <hr />
