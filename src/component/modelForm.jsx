@@ -7,6 +7,7 @@ import HoverIconButton from './HoverIconButton';
 import Loading from './Loading';
 
 function ModelForm() {
+  const [isDragging, setIsDragging] = useState(false);
   const { register, handleSubmit, reset, setValue } = useForm();
   const [selectedOption, setSelectedOption] = useState(''); // 儲存選擇的 radio 按鈕選項
   const [fileData, setFileData] = useState({
@@ -261,9 +262,62 @@ AAARLRLLLYLITRR`}
                     <h4>or</h4>
                   </div>
                   <div className="col-lg-11 col-12">
-                    <div className="custom-file py-5">
-                      <h4 className="text-center pb-4">Choose a file or drag & drop</h4>
-                      <div className="d-flex justify-content-center ">
+
+                    <div
+                      className={`custom-file py-5 border rounded-3 ${
+                        isDragging ? 'bg-light border-primary' : 'border-secondary'
+                      }`}
+                      onDragOver={(e) => {
+                        e.preventDefault(); // 防止瀏覽器預設開啟檔案
+                        setIsDragging(true);
+                      }}
+                      onDragLeave={() => setIsDragging(false)}
+                      onDrop={(e) => {
+                        e.preventDefault();
+                        setIsDragging(false);
+                        const file = e.dataTransfer.files[0];
+                        if (!file) return;
+
+                        // ✅ 驗證副檔名
+                        const allowedExtensions = ['.fasta'];
+                        const fileName = file.name.toLowerCase();
+                        const isAllowed = allowedExtensions.some((ext) => fileName.endsWith(ext));
+
+                        if (!isAllowed) {
+                          const message = `
+                            ❌ <strong>Invalid file type</strong><br>
+                            Only <strong>.fasta</strong> files are allowed.
+                          `;
+                          const customAlert = document.createElement('div');
+                          customAlert.style.position = 'fixed';
+                          customAlert.style.top = '30%';
+                          customAlert.style.left = '50%';
+                          customAlert.style.transform = 'translate(-50%, -50%)';
+                          customAlert.style.background = 'white';
+                          customAlert.style.padding = '20px';
+                          customAlert.style.border = '1px solid #ccc';
+                          customAlert.style.borderRadius = '10px';
+                          customAlert.style.boxShadow = '0 4px 10px rgba(0,0,0,0.1)';
+                          customAlert.style.zIndex = '9999';
+                          customAlert.style.fontFamily = 'Arial, sans-serif';
+                          customAlert.style.fontSize = '18px';
+                          customAlert.style.textAlign = 'center';
+                          customAlert.innerHTML = `
+                            <p style="margin: 0;">${message}</p>
+                            <button class="btn btn-primary btn-lg text-white mt-3" onclick="this.parentElement.remove()">OK</button>
+                          `;
+                          document.body.appendChild(customAlert);
+                          return;
+                        }
+
+                        // 通過檢查才執行
+                        handleFileChange({ target: { files: [file] } });
+                      }}
+                    >
+                      <h4 className="text-center pb-4">
+                        {isDragging ? 'Drop your file here!' : 'Choose a file or drag & drop'}
+                      </h4>
+                      <div className="d-flex justify-content-center">
                         <label
                           htmlFor="fileInput"
                           className="text-center h4 btn btn-outline-primary btn-lg"
@@ -274,12 +328,13 @@ AAARLRLLLYLITRR`}
                           id="fileInput"
                           type="file"
                           {...register('fileInput', { onChange: (e) => handleFileChange(e) })}
-                          onChange={handleFileChange} // 添加文件上傳的 onChange 事件
-                          style={{ display: 'none' }} // 隱藏原本的 file 按鈕
-                          accept=".fasta" // 限制可上傳的文件類型
+                          onChange={handleFileChange}
+                          style={{ display: 'none' }}
+                          accept=".fasta"
                         />
                       </div>
                     </div>
+
                     <div className="custom-select-file my-3 d-flex align-items-center ">
                       <div className="custom-border border-1 border-danger border ms-7">
                         <InsertDriveFileIcon className="m-3" sx={{ color: '#F38986' }} />
