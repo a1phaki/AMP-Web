@@ -9,7 +9,7 @@ import Loading from './Loading';
 function ModelForm() {
   const [isDragging, setIsDragging] = useState(false);
   const { register, handleSubmit, reset, setValue } = useForm();
-  const [selectedOption, setSelectedOption] = useState(''); // 儲存選擇的 radio 按鈕選項
+  const [selectedOption, setSelectedOption] = useState([]); // 儲存選擇的 radio 按鈕選項
   const [fileData, setFileData] = useState({
     fileName: '',
     fileSize: '',
@@ -99,7 +99,10 @@ function ModelForm() {
   const ModalOption = ['E. coli', 'S. aureus', 'P. aeruginosa'];
 
   const handleOption = (e) => {
-    setSelectedOption(e.target.value);
+    const value = e.target.value;
+    setSelectedOption((prev) =>
+      prev.includes(value) ? prev.filter((item) => item !== value) : [...prev, value],
+    );
   };
 
   const maxLines = 10000; // 設定最大允許的輸入行數
@@ -224,7 +227,7 @@ function ModelForm() {
   return (
     <>
       {isLoading && <Loading progress={progress} />}
-      <div className="py-5">
+      <div className="py-2">
         <div className="border border-3 border-secondary rounded-4 shadow-sm">
           <div className="pt-3 pb-2 px-3 bg-secondary rounded-top-3">
             <h2 className="ps-4 h4 fw-medium">USE ANIA</h2>
@@ -262,7 +265,6 @@ AAARLRLLLYLITRR`}
                     <h4>or</h4>
                   </div>
                   <div className="col-lg-11 col-12">
-
                     <div
                       className={`custom-file py-5 border rounded-3 ${
                         isDragging ? 'bg-light border-primary' : 'border-secondary'
@@ -375,15 +377,15 @@ AAARLRLLLYLITRR`}
                             className="form-check-label ms-2"
                           >
                             <input
-                              type="radio"
+                              type="checkbox"
                               value={option}
                               {...register('target', {
                                 required: true,
                                 onChange: (e) => handleOption(e),
                               })}
-                              className="form-check-input "
+                              className="form-check-input"
                               name="target"
-                              checked={selectedOption === option} // 根據選擇的選項來設定
+                              checked={selectedOption.includes(option)} // 是否被選取
                             />
                             {option}
                           </label>
