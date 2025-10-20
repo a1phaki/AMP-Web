@@ -1,5 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useEffect, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 import Plotly from 'plotly.js-dist-min';
 import c3 from 'c3';
@@ -12,9 +11,6 @@ function ResultPage() {
   const location = useLocation();
   const chartRef = useRef(null);
   const violinRef = useRef(null);
-
-  // === 用於記錄目前顯示哪一個 target ===
-  const [currentTargetIndex, setCurrentTargetIndex] = useState(0);
 
   // 若未從合法流程進入（如直接輸入 /result），跳回首頁
   let projectName = '';
@@ -46,70 +42,54 @@ function ResultPage() {
     }
   }
 
-  // === 動態檢查有哪些 target 存在 ===
-  const availableTargets = [
-    { key: 'eColi', label: 'E. coli' },
-    { key: 'sAureus', label: 'S. aureus' },
-    { key: 'pAeruginosa', label: 'P. aeruginosa' },
-  ].filter(({ key }) => tableData.some((item) => item[key] !== undefined && item[key] !== null));
-
-  // === 當前 target ===
-  const currentTarget = availableTargets[currentTargetIndex] || null;
-
-  // === 當前 target 的資料 ===
-  const targetValues = currentTarget
-    ? tableData
-        .map((item) => ({
-          id: item.id,
-          sequence: item.sequence,
-          sequenceLength: item.sequenceLength,
-          value: item[currentTarget.key],
-        }))
-        .filter((d) => d.value !== undefined && d.value !== null)
-    : [];
-
-  const predictedMICs = targetValues.map((d) => d.value);
-  const sequenceLengths = targetValues.map((d) => d.sequenceLength);
-  const minLen = sequenceLengths.length ? Math.min(...sequenceLengths) : 0;
-  const maxLen = sequenceLengths.length ? Math.max(...sequenceLengths) : 0;
+  // === 基礎統計資料 ===
+  const target = tableData[0]?.target || 'N/A';
+  const sequenceLengths = tableData.map((item) => item.sequenceLength);
+  const predictedMICs = tableData.map((item) => item.predictedLogMIC);
+  const minLen = Math.min(...sequenceLengths);
+  const maxLen = Math.max(...sequenceLengths);
   const lowCount = predictedMICs.filter((v) => v < 1).length;
   const highCount = predictedMICs.filter((v) => v > 2).length;
 
-  const topPeptides = [...targetValues].sort((a, b) => a.value - b.value).slice(0, 100);
+  // === Top 10 MIC 最低的胜肽 ===
+  const topPeptides = [...tableData]
+    .sort((a, b) => a.predictedLogMIC - b.predictedLogMIC)
+    .slice(0, 10);
 
-  // === 長度分佈統計 ===
+  // === 長度分佈統計區間 ===
   const numBins = 12;
   const intervalSize = 5;
   const bins = Array.from({ length: numBins }, (_, i) => ({
     label: `${i * intervalSize} - ${(i + 1) * intervalSize}`,
     count: 0,
   }));
-  targetValues.forEach((item) => {
+
+  tableData.forEach((item) => {
     const index = Math.min(Math.floor(item.sequenceLength / intervalSize), numBins - 1);
     bins[index].count += 1;
   });
 
-  // === 使用 useEffect 繪製 C3 條狀圖 ===
+  // === 使用 useEffect 繪製視覺化圖表（Bar + Violin） ===
   useEffect(() => {
-    if (!currentTarget || targetValues.length === 0) return;
+    if (tableData.length === 0) return;
 
+    // === C3: Sequence Length Bar Chart ===
     const categories = bins.map((bin) => bin.label);
     const counts = ['Sequence Count', ...bins.map((bin) => bin.count)];
 
-    const chart = c3.generate({
+    c3.generate({
       bindto: chartRef.current,
       data: {
         columns: [counts],
         type: 'bar',
       },
       color: { pattern: ['#F18989'] },
-      bar: { width: { ratio: 0.75 } },
       axis: {
         x: {
           type: 'category',
           categories,
           label: { text: 'Sequence Length', position: 'outer-center' },
-          tick: { rotate: 55, multiline: false, outer: false },
+          tick: { rotate: 75, multiline: false, outer: false },
           height: 80,
         },
         y: {
@@ -117,106 +97,40 @@ function ResultPage() {
           tick: { outer: false },
         },
       },
-      grid: { y: { show: true, lines: [] } },
+      bar: { width: { ratio: 1 } },
       legend: { show: false },
-      tooltip: {
-        format: {
-          title: () => 'Length Range',
-          value: (v) => `${v} peptides`,
-        },
-      },
-      size: { width: 400, height: 320 },
-      padding: { top: 25, right: 25, bottom: 5, left: 55 },
-      transition: { duration: 400 },
+      size: { width: 350, height: 280 },
+      padding: { top: 0, right: 0, bottom: 0, left: 50 },
+      tooltip: { show: true }, // 建議加上 tooltip
     });
 
-    // 加上這段（延遲讓 SVG 渲染完成後再套字體）
-    setTimeout(() => {
-      const svg = chartRef.current?.querySelector('svg');
-      if (svg) {
-        // 刻度字體
-        svg.querySelectorAll('.c3-axis-x text, .c3-axis-y text').forEach(el => {
-          el.style.fontSize = '13px';
-          el.style.fontFamily = 'Arial, sans-serif';
-          el.style.fill = '#333';
-        });
-        // 軸標題字體
-        svg.querySelectorAll('.c3-axis-x-label, .c3-axis-y-label').forEach(el => {
-          el.style.fontSize = '14px';
-          el.style.fontWeight = 'bold';
-          el.style.fill = '#000';
-        });
-      }
-    }, 100);
-
-  }, [currentTargetIndex, bins]);
-
-  // === 第二層 useEffect: 延遲繪製 Violin Plot，確保動畫完成 ===
-  const [shouldDraw, setShouldDraw] = useState(false);
-
-  useEffect(() => {
-    setShouldDraw(false);
-    const timer = setTimeout(() => setShouldDraw(true), 500); // 500ms 等淡入動畫完成
-    return () => clearTimeout(timer);
-  }, [currentTargetIndex]);
-
-  useEffect(() => {
-    if (!shouldDraw || !currentTarget || targetValues.length === 0) return;
-    if (!violinRef.current) return;
-
-    Plotly.purge(violinRef.current);
-
+    // === Plotly: Violin Plot of Predicted Log MIC ===
     const trace = {
       type: 'violin',
       y: predictedMICs,
-      box: { visible: true, line: { color: '#555', width: 1 } }, // 小框線更細緻
-      line: { color: '#4B70DD', width: 2 }, // 主體線條藍色
-      fillcolor: 'rgba(99, 110, 250, 0.35)', // 柔和藍透明填色
-      meanline: { visible: true, color: '#E4572E', width: 2 }, // 橘色平均線
-      points: 'false', // 顯示所有資料點（可視化分佈）
-      jitter: 0.3,   // 輕微水平抖動，避免重疊
-      scalemode: 'width',
-      name: 'Predicted log MIC Distribution',
-      hovertemplate: 'Predicted log MIC: %{y:.2f}<extra></extra>',
+      box: { visible: true },
+      line: { color: '#636EFA' },
+      fillcolor: 'rgba(99, 110, 250, 0.5)',
+      meanline: { visible: true },
+      name: 'Predicted Log MIC',
+      hovertemplate: 'Log MIC: %{y:.2f}<extra></extra>',
     };
 
     const layout = {
-      margin: { l: 70, r: 30, t: 10, b: 50 },
-      width: 360,
-      height: 320,
-      paper_bgcolor: 'transparent',
-      xaxis: {
-        showticklabels: false,
-        showgrid: false,
-        zeroline: false,
-        showline: false,
-        title: '',
-      },
+      margin: { l: 70, r: 20, t: 0, b: 50 },
+      width: 400,
+      height: 300,
       yaxis: {
         title: {
-          text: '(log µM)',
-          font: { family: 'Arial, sans-serif', size: 18, color: '#222' },
+          text: 'Predicted Log MIC (unit: uM)',
+          font: { family: 'Arial, sans-serif', size: 14, color: '#000' },
         },
-        tickfont: { family: 'Arial, sans-serif', size: 14, color: '#333' },
-        gridcolor: 'rgba(200,200,200,0.3)', // 輕灰格線
         zeroline: false,
       },
-      violingap: 0,
-      violinmode: 'overlay',
-      showlegend: false,
     };
 
     Plotly.newPlot(violinRef.current, [trace], layout, { displayModeBar: false });
-  }, [shouldDraw, currentTargetIndex, predictedMICs]);
-
-  // === 切換 target ===
-  const handlePrev = () => {
-    setCurrentTargetIndex((prev) => (prev === 0 ? availableTargets.length - 1 : prev - 1));
-  };
-
-  const handleNext = () => {
-    setCurrentTargetIndex((prev) => (prev === availableTargets.length - 1 ? 0 : prev + 1));
-  };
+  }, [bins, predictedMICs]);
 
   // === 匯出資料為 CSV 檔案 ===
   const convertToCSV = (tableData) => {
@@ -299,86 +213,61 @@ function ResultPage() {
     <>
       <WelcomeBanner />
       <div className="container py-5">
-        <div className="row">
-          {/* Prediction Overview 區塊 */}
-          <div className="col-xl-8 col-12 mb-1">
-            <div className="border border-3 border-secondary rounded-4 shadow-sm mb-4">
-              <div className="pt-3 pb-2 px-3 bg-secondary rounded-top-3">
-                <h2 className="ps-4 h4 fs-bold">
-                  Prediction Overview - 
-                  {currentTarget && (
-                    <span className="ms-2 fw-bold fst-italic">
-                      {currentTarget.label}
-                    </span>
-                  )}
-                </h2>
-              </div>
-              <div className="position-relative bg-white pt-4 px-4 pb-0 mb-2" style={{ minHeight: '300px', overflow: 'visible'}}>
-                <AnimatePresence mode="wait">
-                  <motion.div
-                    key={currentTarget ? currentTarget.label : 'none'}
-                    initial={{ opacity: 0, x: 80 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, x: -80 }}
-                    transition={{ duration: 0.4, ease: 'easeInOut' }}
-                    className="row"
-                  >
-                    {/* 統計摘要 */}
-                    <div className="col-lg-6 col-md-6 col-12 d-flex flex-column justify-content-center">
-                      <ul className="list-unstyled border-start ps-3 border-3 border-primary" style={{ fontSize: '1.2rem' }}>
-                        <li><strong>Project ID:</strong> {projectName}</li>
-                        <li><strong>Total Peptides:</strong> {targetValues.length}</li>
-                        <li><strong>Sequence Length Range:</strong> {minLen} ~ {maxLen}</li>
-                        <li><strong>High-Activity Peptides:</strong> {lowCount}</li>
-                        <li><strong>Low-Activity Peptides:</strong> {highCount}</li>
-                        <TopPeptidesViewer topPeptides={topPeptides} />
-                      </ul>
-                    </div>
-
-                    {/* Violin Plot 圖 */}
-                    <div className="col-lg-6 col-md-6 col-12 d-flex flex-column align-items-center justify-content-center">
-                      <div className="text-center mb-2" style={{ fontSize: '1.2rem' }}>
-                        <strong>Distribution of Predicted log MIC</strong>
-                      </div>
-                      <div ref={violinRef}></div>
-                    </div>
-                  </motion.div>
-                </AnimatePresence>
-
-                {/* 左右切換按鈕（固定在卡片左右中央） */}
-                {availableTargets.length > 1 && (
-                  <>
-                    <button
-                      onClick={handlePrev}
-                      className="btn btn-light position-absolute top-50 translate-middle-y shadow-sm border rounded-circle"
-                      style={{ width: '40px', height: '40px', left: '-20px'}}
-                    >
-                      &lt;
-                    </button>
-                    <button
-                      onClick={handleNext}
-                      className="btn btn-light position-absolute top-50 translate-middle-y shadow-sm border rounded-circle"
-                      style={{ width: '40px', height: '40px', right: '-20px'}}
-                    >
-                      &gt;
-                    </button>
-                  </>
-                )}
-              </div>
-            </div>
+        {/* Summary 區塊 */}
+        <div className="border border-3 border-secondary rounded-4 shadow-sm mb-4">
+          <div className="pt-3 pb-2 px-3 bg-secondary rounded-top-3">
+            <h2 className="ps-4 h4 fs-bold">Prediction Summary</h2>
           </div>
-
-          {/* 右邊：Sequence Length Distribution */}
-          <div className="col-xl-4 col-12 mb-1 pb-0">
-            <div className="border border-3 border-secondary rounded-4 shadow-sm mb-4 pb-2">
-              <div className="pt-3 pb-2 px-3 bg-secondary rounded-top-3">
-                <h2 className="ps-4 h4 fs-bold">Peptide Lengths</h2>
+          <div className="bg-white pt-4 px-4 pb-1 mb-2">
+            <div className="row">
+              {/* 統計摘要 */}
+              <div className="col-lg-4 col-12">
+                <ul
+                  className="list-unstyled border-start ps-3 border-3 border-primary"
+                  style={{ fontSize: '1rem' }}
+                >
+                  <li>
+                    <strong>Project ID: </strong>
+                    {projectName}
+                  </li>
+                  <li>
+                    <strong>Target: </strong>
+                    {target}
+                  </li>
+                  <li>
+                    <strong>Number of sequences: </strong>
+                    {tableData.length}
+                  </li>
+                  <li>
+                    <strong>Sequence Length: </strong>
+                    {minLen} ~ {maxLen}
+                  </li>
+                  <li>
+                    <strong>Low MIC count: </strong>
+                    {lowCount} (log MIC &lt; 1)
+                  </li>
+                  <li>
+                    <strong>High MIC count: </strong>
+                    {highCount} (log MIC &gt; 2)
+                  </li>
+                  <TopPeptidesViewer topPeptides={topPeptides} />
+                </ul>
               </div>
-              <div className="bg-white py-4 d-flex flex-column align-items-center mb-0 pb-0">
+
+              {/* Sequence Length 分佈圖 */}
+              <div className="col-lg-4 col-md-6 col-12">
                 <div className="text-center mb-2" style={{ fontSize: '1.2rem' }}>
-                  <strong>Distribution of Sequence Lengths</strong>
+                  <strong>Sequence Length Distribution</strong>
                 </div>
                 <div ref={chartRef}></div>
+              </div>
+
+              {/* Violin Plot 圖 */}
+              <div className="col-lg-4 col-md-6 col-12">
+                <div className="text-center mb-2 ms-8" style={{ fontSize: '1.2rem' }}>
+                  <strong>Predicted Log MIC</strong>
+                </div>
+                <div ref={violinRef}></div>
               </div>
             </div>
           </div>

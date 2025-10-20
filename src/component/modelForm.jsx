@@ -160,7 +160,7 @@ function ModelForm() {
     const requestBody = {
       id: fastaId,
       data: fastaDataArray,
-      target: data.target || '',
+      target: Array.isArray(data.target) ? data.target : [data.target],
     };
 
     console.log('送出的資料格式：', requestBody);
@@ -193,8 +193,9 @@ function ModelForm() {
         id: item.ID,
         sequence: item.Sequence,
         sequenceLength: item['Sequence Length'],
-        target: item.Target,
-        predictedLogMIC: item['Predicted Log MIC'],
+        eColi: item['E. coli'] ?? null,
+        sAureus: item['S. aureus'] ?? null,
+        pAeruginosa: item['P. aeruginosa'] ?? null,
       }));
 
       // 設定進度為 100%
@@ -363,6 +364,23 @@ AAARLRLLLYLITRR`}
                   <div className="d-flex">
                     <h4 className="text-primary fw-semibold mb-3 me-3">Step2</h4>
                     <h5 className="text-black fw-normal pt-1">Select type</h5>
+                    {/* ⚠️ 模型適用層級提示（小標籤版） */}
+                    <span
+                      style={{
+                        backgroundColor: '#FFF3CD',
+                        border: '1px solid #FFEEBA',
+                        borderRadius: '4px',
+                        padding: '1px 6px',
+                        margin: '-12px 0px 0px 10px',
+                        fontSize: '16px',
+                        color: '#856404',
+                        fontWeight: 500,
+                        whiteSpace: 'nowrap',
+                        alignSelf: 'center',
+                      }}
+                    >
+                      ⚠️ <b>species-level</b> only
+                    </span>
                   </div>
                   <div className="row g-3">
                     {ModalOption.map((option, index) => (
@@ -373,7 +391,7 @@ AAARLRLLLYLITRR`}
                           }`}
                         >
                           <label
-                            style={{ display: 'block', fontSize: '15px' }}
+                            style={{ display: 'block', fontSize: '15px', fontStyle: 'italic'}}
                             className="form-check-label ms-2"
                           >
                             <input

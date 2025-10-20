@@ -7,7 +7,7 @@ function TopPeptidesViewer({ topPeptides }) {
 
   return (
     <div className="mt-3">
-      <div className="border rounded bg-light" style={{ fontSize: '1.0rem' }}>
+      <div className="border rounded bg-light" style={{ fontSize: '1.1rem' }}>
         <div
           className="border-bottom px-3 py-2 d-flex align-items-center justify-content-between text-white rounded-top"
           style={{ backgroundColor: '#fcc2b8' }}
@@ -29,7 +29,7 @@ function TopPeptidesViewer({ topPeptides }) {
 
         <div className="px-3 py-2" style={{ lineHeight: '1.5' }}>
           <div className="d-flex">
-            <strong className="me-2">ID:</strong>
+            <strong className="me-2">Peptide ID:</strong>
             <span>{selectedPeptide.id}</span>
           </div>
           <div className="d-flex">
@@ -47,25 +47,30 @@ function TopPeptidesViewer({ topPeptides }) {
             </span>
           </div>
           <div className="d-flex">
-            <strong className="me-2">Length:</strong>
+            <strong className="me-2">Sequence Length:</strong>
             <span>{selectedPeptide.sequenceLength}</span>
           </div>
           <div className="d-flex">
-            <strong className="me-2">Log MIC:</strong>
-            <span>{parseFloat(selectedPeptide.predictedLogMIC).toFixed(2)} (uM)</span>
+            <strong className="me-2">Predicted log MIC:</strong>
+            <span>
+              {isFinite(selectedPeptide.value)
+                ? selectedPeptide.value.toFixed(2)
+                : '—'} (log µM)
+            </span>
           </div>
         </div>
       </div>
     </div>
   );
 }
+
 TopPeptidesViewer.propTypes = {
   topPeptides: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
       sequence: PropTypes.string.isRequired,
       sequenceLength: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
-      predictedLogMIC: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+      value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
     }),
   ).isRequired,
 };
