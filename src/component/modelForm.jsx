@@ -26,7 +26,7 @@ function ModelForm() {
   const [progress, setProgress] = useState(0);
 
   // FastAPI 伺服器地址
-  const API_URL = 'https://biomics.lab.nycu.edu.tw/api/upload-fasta';
+  const API_URL = 'https://biomics.lab.nycu.edu.tw/api/inference';
 
   // 處理檔案上傳
   const handleFileChange = (event) => {
@@ -229,7 +229,7 @@ function ModelForm() {
     <>
       {isLoading && <Loading progress={progress} />}
       <div className="py-2">
-        <div className="border border-3 border-secondary rounded-4 shadow-sm">
+        <div className="border border-3 border-secondary rounded-4 shadow-sm mb-4">
           <div className="pt-3 pb-2 px-3 bg-secondary rounded-top-3">
             <h2 className="ps-4 h4 fw-medium">USE ANIA</h2>
           </div>
